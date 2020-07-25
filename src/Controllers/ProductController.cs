@@ -27,19 +27,25 @@ namespace ollsmart.Controllers
             throw new NotImplementedException();
         }
 
-        // GET api/<UserController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        // // GET api/<UserController>/5
+        // [HttpGet("{id}")]
+        // public string Get(int id)
+        // {
+        //     return _productService.GetProductById(id);
+        // }
+        
+        [HttpGet("productsByCatId/{id}")]
+        public string GetProductsByCatId(int id)
         {
-            return "value";
+            return "GetProductsByCatId"+id;
         }
-
-        // POST api/<UserController>
-        [HttpPost]
-        public void Post([FromBody] Product product)
-        {
-            _productService.SaveProduct(product);
-        }
+       
+        // // POST api/<UserController>
+        // [HttpPost]
+        // public void Post([FromBody] Product product)
+        // {
+        //     _productService.SaveProduct(product);
+        // }
 
        
        

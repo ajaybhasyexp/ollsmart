@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace ollsmart.Services
 {
-    public interface IProductService
+    public interface ICategoryService
     {
         /// <summary>
         /// Saves the user object.
         /// </summary>
-        /// <param name="product"></param>
+        /// <param name="category"></param>
         /// <returns>A user object after saving it in the db.</returns>
-        Product SaveProduct(Product product);
-        string GetProductById(int id);
+        Category SaveCategory(Category category);
     }
 }

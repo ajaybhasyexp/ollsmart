@@ -37,5 +37,9 @@ namespace ollsmart.Services
             }
             
         }
+        public string GetProductById(int id)
+        {
+            return "111";
+        }
     }
 }

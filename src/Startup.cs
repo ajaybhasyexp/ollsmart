@@ -27,13 +27,15 @@ namespace OllsMart
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<ICategoryService, CategoryService>();
             services.AddControllersWithViews();
            
             services.AddDbContext<OllsMartContext>((_services, options) =>
             {
                 var configuration = (ConfigurationService)_services.GetService(typeof(ConfigurationService));
                 var logger = (ILogger<Startup>)_services.GetService(typeof(ILogger<Startup>));
-                var connectionString = configuration.GetConnectionString();
+                var connectionString = Configuration.GetConnectionString("Local");
 
                 if (string.IsNullOrEmpty(connectionString)) {
                     logger.LogWarning("Connection string is not resolved.");

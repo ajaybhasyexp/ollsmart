@@ -8,6 +8,7 @@ namespace OllsMart
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         private IConfiguration _config;
         public OllsMartContext(DbContextOptions<OllsMartContext> options,
@@ -24,6 +25,9 @@ namespace OllsMart
 
             var product = modelBuilder.Entity<Product>();
             product.HasKey(p => p.ProductId);
+
+            var category = modelBuilder.Entity<Category>();
+            product.HasKey(p => p.CategoryId);
         }
 
     }
