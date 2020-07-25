@@ -15,11 +15,11 @@ namespace OllsMart.Services
         }
 
         public string GetConnectionString() {
-            var dbhost = _configuration.GetValue<string>("CWL_DB_HOST", "localhost");
-            var dbname = _configuration.GetValue<string>("CWL_DB_NAME", "CWL.VirtualCare");
-            var dbuser = _configuration.GetValue<string>("CWL_DB_USER", null);
-            var dbpassword = _configuration.GetValue<string>("CWL_DB_PASSWORD", null);
-            var dbport = _configuration.GetValue<int>("CWL_DB_PORT", 0);
+            var dbhost = _configuration.GetValue<string>("CWL_DB_HOST", "127.0.0.1");
+            var dbname = _configuration.GetValue<string>("CWL_DB_NAME", "ollsmartdb");
+            var dbuser = _configuration.GetValue<string>("CWL_DB_USER", "root");
+            var dbpassword = _configuration.GetValue<string>("CWL_DB_PASSWORD", "root@123");
+            var dbport = _configuration.GetValue<int>("CWL_DB_PORT",3333);
 
             if (string.IsNullOrEmpty(dbuser)) {
                 return GetDefaultConnectionString();
