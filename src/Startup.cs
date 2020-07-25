@@ -28,7 +28,7 @@ namespace OllsMart
             {
                 var configuration = (ConfigurationService)_services.GetService(typeof(ConfigurationService));
                 var logger = (ILogger<Startup>)_services.GetService(typeof(ILogger<Startup>));
-                var connectionString = configuration.GetConnectionString();
+                var connectionString = Configuration.GetConnectionString("Local");
 
                 if (string.IsNullOrEmpty(connectionString)) {
                     logger.LogWarning("Connection string is not resolved.");
