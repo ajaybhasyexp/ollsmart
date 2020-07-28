@@ -7,6 +7,7 @@ namespace Models.Entities
         public string BrandName { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }
+        public bool IsActive { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedTime { get; set; }
         public DateTime Timestamp { get; set; }

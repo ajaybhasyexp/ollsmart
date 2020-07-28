@@ -20,11 +20,22 @@ namespace ollsmart.Controllers
 
         // GET: api/<UserController>
         [HttpGet]
-        public string Get()
+        public  List<CategoryResponse> Get()
         {
-           return "GetAllCategory";
+          return _categoryService.GetAll();        
         }
 
+        [HttpGet("ParentCategory")]
+        public List<Category> GetParentCategory()
+        {
+            return _categoryService.GetParentCategory();     
+        }
+
+        [HttpGet("SubCategory/{id}")]
+        public List<Category> GetSubtCategory(int id)
+        {
+            return _categoryService.GetSubCategory(id);     
+        }
         // GET api/<UserController>/5
         // [HttpGet("{id}")]
         // public string Get(int id)
@@ -32,12 +43,12 @@ namespace ollsmart.Controllers
         //     return "GetCategoryById";
         // }
 
-        // // POST api/<UserController>
-        // [HttpPost]
-        // public void Post([FromBody] Category category)
-        // {
-        //     _categoryService.SaveCategory(category);
-        // }
+        // POST api/<UserController>
+        [HttpPost]
+        public Category Post([FromBody] Category category)
+        {
+            return _categoryService.SaveCategory(category);
+        }
 
         // // PUT api/<UserController>/5
         // [HttpPut("{id}")]

@@ -40,12 +40,11 @@ namespace ollsmart.Controllers
             return "GetProductsByCatId"+id;
         }
        
-        // // POST api/<UserController>
-        // [HttpPost]
-        // public void Post([FromBody] Product product)
-        // {
-        //     _productService.SaveProduct(product);
-        // }
+        [HttpPost]
+        public Product Post([FromBody] Product product)
+        {
+           return _productService.SaveProduct(product);
+        }
 
        
        

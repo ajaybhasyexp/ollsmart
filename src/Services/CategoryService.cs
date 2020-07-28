@@ -1,6 +1,8 @@
 using Models.Entities;
 using OllsMart;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace ollsmart.Services
 {
@@ -12,7 +14,27 @@ namespace ollsmart.Services
         {
             _dbContext = ollsMartContext;
         }
-
+        public List<CategoryResponse>  GetAll()
+        {
+            return (from c in _dbContext.Categories
+                    join p in _dbContext.Categories on c.ParentCategoryId equals p.CategoryId 
+                    into g from p in g.DefaultIfEmpty()
+                  select new CategoryResponse() { CategoryId = c.CategoryId,  CategoryName = c.CategoryName, ParentCategoryId = c.ParentCategoryId,
+                  ParentCategory = p.CategoryName,IsActive = c.IsActive,ImageUrl=c.ImageUrl,Description = c.Description }).OrderBy(x => x.ParentCategoryId).ThenBy(x => x.CategoryName).ToList();
+          //  return data.where(o => o.ParentCategoryId>0);
+         
+        }  
+        public List<Category> GetParentCategory()
+        {
+            return _dbContext.Categories.Where(o => (o.ParentCategoryId==0)&&(o.IsActive == true)).ToList();
+          //  return data.where(o => o.ParentCategoryId>0);
+         
+        } 
+        public List<Category> GetSubCategory(int id)
+        {
+            return _dbContext.Categories.Where(o => (o.ParentCategoryId==id)&&(o.IsActive == true)).ToList();
+         
+        }  
         public Category SaveCategory(Category category)
         {
             if (category != null)

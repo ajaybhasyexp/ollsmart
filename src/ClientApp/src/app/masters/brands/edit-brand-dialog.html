@@ -1,0 +1,29 @@
+<mat-dialog-content>
+  <h2 mat-dialog-title>Add New Brand</h2>
+  <form [formGroup]="brandForm" >
+  <div class="example-container">
+      <mat-form-field appearance="fill">
+        <mat-label>Brand</mat-label>
+        <input formControlName="brandName"  matInput>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <textarea formControlName="brandDescription" required matInput></textarea>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="fill">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="brandStatus" >
+          <mat-option name="status"   value="1">Active</mat-option>
+          <mat-option name="status" value="0">In Active</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <button (click)="saveBrandDetails()" mat-raised-button color="primary">Submit</button>
+      &nbsp;
+      <button (click)="clearForm()" mat-raised-button color="primary" >Clear</button>
+    </div>    
+  </form> 
+</mat-dialog-content> 
+  
