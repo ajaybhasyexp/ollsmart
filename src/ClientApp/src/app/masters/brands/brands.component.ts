@@ -6,11 +6,9 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import Swal from 'sweetalert2';
 
-
-export interface DialogData {
-  animal: 'panda' | 'unicorn' | 'lion';
-}
 @Component({
   selector: 'app-brands',
   templateUrl: './brands.component.html',
@@ -23,28 +21,34 @@ export class BrandsComponent implements OnInit {
   brand = new Brand();
   brands: Array<Brand> = new Array<Brand>();
   
+  public btnSubmited = false;
+  
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   brandForm = new FormGroup({
-    brandName: new FormControl('', Validators.required),
-    brandDescription: new FormControl('', Validators.required),
-    brandStatus: new FormControl('', Validators.required),
+    brandName: new FormControl('', Validators.required), 
+    brandDescription: new FormControl('', Validators.required)
   });
-  constructor(http: HttpClient, 
-    @Inject('BASE_URL') baseUrl: string,
-    public dialog: MatDialog) { 
-    
-    http.get<Array<Brand>>(baseUrl + 'api/brand').subscribe(result => {
+  baseUrl: string;
+  constructor(private http: HttpClient, 
+     @Inject('BASE_URL') url: string,
+    public dialog: MatDialog,
+    private modalService: NgbModal) { 
+     this.baseUrl=url;
+  }
+
+  ngOnInit() {
+    this.getBrands(); 
+  }
+  getBrands() {
+    this.http.get<Array<Brand>>(this.baseUrl + 'api/brand').subscribe(result => {
       this.brands = result;
       this.dataSource = new MatTableDataSource(this.brands);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       console.log(this.brands);
     }, error => console.error(error));
-  }
-
-  ngOnInit() {
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -54,57 +58,83 @@ export class BrandsComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  OpenEditModal(){
-    const dialogRef = this.dialog.open(DialogContentExampleDialog);
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+  
+  OpenModal(content,id:number){
+    this.brand = new Brand();   
+    if(id>0)
+    {
+        this.http.get<Brand>(this.baseUrl + 'api/Brand/BrandById/'+id).subscribe(result => {
+        // result.push(this.brand);
+        this.BindBrand(result);
+        this.brand=result;
+      }, error => console.error(error));
+    }
+    else{
+      this.clearForm();
+    }
+    this.modalService.open(content);
+  }
+  BindBrand(data:Brand) {
+    console.log(data);
+    this.brand=data;
+    this.brandForm.setValue({
+      brandName: data.brandName,
+      brandDescription: data.description
     });
   }
-  OpenAddModal(){
-    const dialogRef = this.dialog.open(DialogContentExampleDialog,
-      {
-        data: {
-          animal: 'panda'
-        }
-      });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-  OpenDeleteModal(content) {
-   // this.modalReference = this.modalService.open(content);
-  }
-  
-  
-
-}
-@Component({
-  selector: 'edit-brand-dialog',
-  templateUrl: 'edit-brand-dialog.html',
-})
-export class DialogContentExampleDialog {
-  brandForm = new FormGroup({
-    brandName: new FormControl('', Validators.required),
-    brandDescription: new FormControl('', Validators.required),
-    brandStatus: new FormControl('', Validators.required),
-  });
-  constructor(
-    public dialogRef: MatDialogRef<DialogContentExampleDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
   saveBrandDetails(){
-    if (this.brandForm.valid) {         
-      console.log(this.brandForm);
-    }
-    else {
-     alert('Please enter all details');
-    }
+    this.btnSubmited = true;
+    if (this.brandForm.valid) {   
+      this.btnSubmited = false;    
+      this.brand.brandName=this.brandForm.get('brandName').value; 
+      this.brand.description=this.brandForm.get('brandDescription').value; 
+      this.brand.isActive=true;
+      this.brand.createdBy=1;
+      console.log(this.brand.brandId);
+      console.log(this.brand);
+     // if((this.brand.brandId==0) || (this.brand.brandId==undefined)){
+        this.http.post(this.baseUrl + 'api/Brand', this.brand).subscribe(
+          (response) => console.log(  response),
+          (error) => console.log(error)        
+        )
+      // }else{
+      //   alert('put');
+      // }
+      
+      this.getBrands(); 
+    } 
+    
   }
-  
-  
+  clearForm() {
+    this.btnSubmited = false;
+    this.brandForm.reset();
+   
+  }
+  DeleteDialog(data)
+  {
+    console.log(data);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        console.log('ss');
+        this.http.post(this.baseUrl + 'api/Brand/DeleteBrand', data).subscribe(
+          (response) => console.log(  response),
+          (error) => console.log(error)        
+        )
+        // Swal.fire(
+        //   'Deleted!',
+        //   'Your file has been deleted.',
+        //   'success'
+        // )
+      }
+    })
+  }
 }

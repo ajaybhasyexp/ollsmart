@@ -1,13 +1,13 @@
 import { Timestamp } from "rxjs";
 
-export class Brand {
-    BrandId: number;
-    BrandName: string;
-    Description: string;
-    ImageUrl: string;
-    IsActive: boolean;
-    CreatedBy: number;
-    CreatedTime: string;
-    Timestamp: string;
+export class   Brand {
+    brandId: number;
+    brandName: string;
+    description: string;
+    imageUrl: string;
+    isActive: boolean;
+    createdBy: number;
+    createdTime: string;
+    timestamp: string;
   }
 

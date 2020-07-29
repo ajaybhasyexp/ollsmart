@@ -25,7 +25,11 @@ namespace ollsmart.Controllers
             return _brandService.GetAll();
         }
 
-       
+       [HttpGet("BrandById/{id}")]
+        public Brand GetBrandById(int id)
+        {
+            return _brandService.GetBrandById(id);
+        }
 
         // POST api/<UserController>
         [HttpPost]
@@ -33,7 +37,12 @@ namespace ollsmart.Controllers
         {
             return _brandService.SaveBrand(brand);
         }
-
+        
+        [HttpPost("DeleteBrand")]
+        public bool DeleteBrand(Brand brand)
+        {
+            return _brandService.DeleteBrand( brand);
+        }
      
     }
 }

@@ -34,6 +34,11 @@ namespace ollsmart.Services
         {
             return _dbContext.Categories.Where(o => (o.ParentCategoryId==id)&&(o.IsActive == true)).ToList();
          
+        } 
+        public Category GetCategoryById(int id)
+        {
+            return _dbContext.Categories.Where(o => o.CategoryId == id).FirstOrDefault();
+         
         }  
         public Category SaveCategory(Category category)
         {
@@ -48,7 +53,7 @@ namespace ollsmart.Services
                 else
                 {
                     category.Timestamp = DateTime.UtcNow;
-                    _dbContext.Categories.Add(category);
+                    _dbContext.Categories.Update(category);
                 }
                 _dbContext.SaveChanges();
                 return category;

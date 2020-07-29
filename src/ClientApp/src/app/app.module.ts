@@ -15,7 +15,7 @@ import { BrandsComponent } from './masters/brands/brands.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
 import {MatDialogModule} from '@angular/material/dialog';
-import {DialogContentExampleDialog} from './masters/brands/brands.component';
+// import {DialogContentExampleDialog} from './masters/brands/brands.component';
 import {
   MatButtonModule,
   MatFormFieldModule,
@@ -29,6 +29,9 @@ import {
   MatPaginatorModule
 } from "@angular/material";
 import { CategoriesComponent } from './masters/categories/categories.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ParentCategoriesComponent } from './masters/parent-categories/parent-categories.component';
+
 
 @NgModule({
   declarations: [
@@ -40,7 +43,8 @@ import { CategoriesComponent } from './masters/categories/categories.component';
     MastersComponent,
     BrandsComponent,
     CategoriesComponent,
-    DialogContentExampleDialog
+    ParentCategoriesComponent,
+    // DialogContentExampleDialog
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -59,6 +63,7 @@ import { CategoriesComponent } from './masters/categories/categories.component';
     MatPaginatorModule,
     MatDialogModule,
     ReactiveFormsModule,
+    NgbModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
@@ -70,6 +75,6 @@ import { CategoriesComponent } from './masters/categories/categories.component';
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [DialogContentExampleDialog]
+  // entryComponents: [DialogContentExampleDialog]
 })
 export class AppModule { }

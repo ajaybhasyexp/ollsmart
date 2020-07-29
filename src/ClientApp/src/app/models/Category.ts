@@ -1,14 +1,14 @@
 import { Timestamp } from "rxjs";
 
 export class Category {
-    CategoryId: number;
-    CategoryName: string;
-    Description: string;
-    ParentCategoryId: number;
-    ImageUrl: string;
-    IsActive: boolean;
-    CreatedBy: number;
-    CreatedTime: string;
-    Timestamp: string;
+    categoryId: number;
+    categoryName: string;
+    description: string;
+    parentCategoryId: number;
+    imageUrl: string;
+    isActive: boolean;
+    createdBy: number;
+    createdTime: string;
+    timestamp: string;
   }
 

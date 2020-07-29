@@ -17,5 +17,7 @@ namespace ollsmart.Services
         List<CategoryResponse> GetAll();
         List<Category> GetParentCategory();
         List<Category> GetSubCategory(int id);
+        Category GetCategoryById(int id);
+        
     }
 }

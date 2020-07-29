@@ -36,14 +36,13 @@ namespace ollsmart.Controllers
         {
             return _categoryService.GetSubCategory(id);     
         }
-        // GET api/<UserController>/5
-        // [HttpGet("{id}")]
-        // public string Get(int id)
-        // {
-        //     return "GetCategoryById";
-        // }
+         
+        [HttpGet("CategoryById/{id}")]
+        public Category GetCategoryById(int id)
+        {
+            return _categoryService.GetCategoryById(id);              
+        }
 
-        // POST api/<UserController>
         [HttpPost]
         public Category Post([FromBody] Category category)
         {

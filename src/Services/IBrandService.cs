@@ -10,5 +10,7 @@ namespace ollsmart.Services
     {
         Brand SaveBrand(Brand brand);
         List<Brand> GetAll();
+        Brand GetBrandById(int id);
+        bool DeleteBrand(Brand brand);
     }
 }
