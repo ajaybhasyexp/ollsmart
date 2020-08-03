@@ -6,7 +6,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal,NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -20,6 +20,7 @@ export class BrandsComponent implements OnInit {
   dataSource: MatTableDataSource<Brand>;
   brand = new Brand();
   brands: Array<Brand> = new Array<Brand>();
+  modalReference: NgbModalRef;
   
   public btnSubmited = false;
   
@@ -70,9 +71,9 @@ export class BrandsComponent implements OnInit {
       }, error => console.error(error));
     }
     else{
-      this.clearForm();
+      this.ClearForm();
     }
-    this.modalService.open(content);
+    this.modalReference =this.modalService.open(content);
   }
   BindBrand(data:Brand) {
     console.log(data);
@@ -83,7 +84,7 @@ export class BrandsComponent implements OnInit {
     });
   }
 
-  saveBrandDetails(){
+  SaveBrandDetails(){
     this.btnSubmited = true;
     if (this.brandForm.valid) {   
       this.btnSubmited = false;    
@@ -91,25 +92,20 @@ export class BrandsComponent implements OnInit {
       this.brand.description=this.brandForm.get('brandDescription').value; 
       this.brand.isActive=true;
       this.brand.createdBy=1;
-      console.log(this.brand.brandId);
-      console.log(this.brand);
-     // if((this.brand.brandId==0) || (this.brand.brandId==undefined)){
-        this.http.post(this.baseUrl + 'api/Brand', this.brand).subscribe(
-          (response) => console.log(  response),
-          (error) => console.log(error)        
-        )
-      // }else{
-      //   alert('put');
-      // }
-      
-      this.getBrands(); 
-    } 
-    
+      this.http.post(this.baseUrl + 'api/Brand', this.brand).subscribe(
+        (response) => {
+          console.log( response);
+          this.modalReference.close();
+          this.getBrands(); 
+        },
+        (error) => console.log(error)        
+      )
+    }  
   }
-  clearForm() {
+
+  ClearForm() {
     this.btnSubmited = false;
-    this.brandForm.reset();
-   
+    this.brandForm.reset(); 
   }
   DeleteDialog(data)
   {
@@ -126,14 +122,9 @@ export class BrandsComponent implements OnInit {
       if (result.value) {
         console.log('ss');
         this.http.post(this.baseUrl + 'api/Brand/DeleteBrand', data).subscribe(
-          (response) => console.log(  response),
+          (response) =>{this.getBrands(); },
           (error) => console.log(error)        
         )
-        // Swal.fire(
-        //   'Deleted!',
-        //   'Your file has been deleted.',
-        //   'success'
-        // )
       }
     })
   }

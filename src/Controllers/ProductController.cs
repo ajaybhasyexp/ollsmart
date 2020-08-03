@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
 using ollsmart.Services;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,38 +16,108 @@ namespace ollsmart.Controllers
     public class ProductController : ControllerBase
     {
         private IProductService _productService { get; set; }
-        public ProductController(IProductService productService)
+        private readonly ILogger<ProductController> _logger;
+        public ProductController(IProductService productService,ILogger<ProductController> logger)
         {
             _productService = productService;
+             _logger = logger;
         }
 
         // GET: api/<UserController>
         [HttpGet]
-        public IEnumerable<Product> Get()
+        public IActionResult Get()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result=_productService.GetProducts();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while fetching products");
+                return StatusCode(500);
+            }
         }
-
-        // // GET api/<UserController>/5
-        // [HttpGet("{id}")]
-        // public string Get(int id)
-        // {
-        //     return _productService.GetProductById(id);
-        // }
-        
         [HttpGet("productsByCatId/{id}")]
-        public string GetProductsByCatId(int id)
+        public IActionResult GetProductsByCatId(int id)
         {
-            return "GetProductsByCatId"+id;
+            var result=false;
+            return Ok(result);
+        }
+        
+        [HttpGet("productsById/{id}")]
+        public IActionResult GetProductsById(int id)
+        {
+             try
+            {
+                var result=_productService.GetProductById(id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while fetching product by id");
+                return StatusCode(500);
+            }
         }
        
         [HttpPost]
-        public Product Post([FromBody] Product product)
+        public IActionResult Post([FromBody] Product product)
         {
-           return _productService.SaveProduct(product);
+            try
+            {
+                 _productService.SaveProduct(product);
+                return Created("api/Product", product);
+            }
+            catch (Exception ex)
+            {
+                
+                _logger.LogError(ex, "Error while saving Product");
+                return StatusCode(500);
+            }
         }
-
-       
+        [HttpGet("ProductProperty")]
+        public IActionResult GetProductProperty()
+        {
+            try
+            {
+                var result=_productService.GetProductProperty();
+               return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while fetching product property");
+                return StatusCode(500);
+            }
+        }
+        [HttpGet("ProductPropertyById/{id}")]
+        public IActionResult GetProductPropertyById(int id)
+        {
+            try
+            {
+                var result=_productService.GetProductPropertyById(id);
+               return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while fetching product property by id ");
+                return StatusCode(500);
+            }
+        }
+         [HttpPost("ProductProperty")]
+        public IActionResult SaveProductProperty( ProductProperty productProperty)
+        {
+             try
+            {
+                _productService.SaveProductProperty(productProperty);
+                return Created("api/Product/ProductProperty", productProperty);
+            }
+            catch (Exception ex)
+            {
+                
+                _logger.LogError(ex, "Error while saving Product Property");
+                return StatusCode(500);
+            }
+        }
        
     }
 }

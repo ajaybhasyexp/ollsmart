@@ -15,6 +15,8 @@ import { BrandsComponent } from './masters/brands/brands.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
 import {MatDialogModule} from '@angular/material/dialog';
+// import { FormWizardModule } from 'angular2-wizard';
+
 // import {DialogContentExampleDialog} from './masters/brands/brands.component';
 import {
   MatButtonModule,
@@ -31,6 +33,9 @@ import {
 import { CategoriesComponent } from './masters/categories/categories.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ParentCategoriesComponent } from './masters/parent-categories/parent-categories.component';
+import { ProductsComponent } from './masters/products/products.component';
+import { UnitsComponent } from './masters/units/units.component';
+import { ProductPropertyComponent } from './masters/product-property/product-property.component';
 
 
 @NgModule({
@@ -44,6 +49,9 @@ import { ParentCategoriesComponent } from './masters/parent-categories/parent-ca
     BrandsComponent,
     CategoriesComponent,
     ParentCategoriesComponent,
+    ProductsComponent,
+    UnitsComponent,
+    ProductPropertyComponent
     // DialogContentExampleDialog
   ],
   imports: [
@@ -64,11 +72,13 @@ import { ParentCategoriesComponent } from './masters/parent-categories/parent-ca
     MatDialogModule,
     ReactiveFormsModule,
     NgbModule,
+    // FormWizardModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'masters', component: MastersComponent },
+      { path: 'products', component: ProductsComponent },
       
     ]),
     BrowserAnimationsModule

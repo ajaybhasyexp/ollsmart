@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Models.Entities;
 using ollsmart.Services;
 using System;
@@ -13,9 +14,11 @@ namespace ollsmart.Controllers
     public class CategoryController : ControllerBase
     {
         private ICategoryService _categoryService { get; set;   }
-        public CategoryController(ICategoryService categoryService)
+        private readonly ILogger<CategoryController> _logger;
+        public CategoryController(ICategoryService categoryService,ILogger<CategoryController> logger)
         {
             _categoryService = categoryService;
+            _logger = logger;
         }
 
         // GET: api/<UserController>
@@ -26,13 +29,13 @@ namespace ollsmart.Controllers
         }
 
         [HttpGet("ParentCategory")]
-        public List<Category> GetParentCategory()
+        public List<CategoryResponse> GetParentCategory()
         {
             return _categoryService.GetParentCategory();     
         }
 
         [HttpGet("SubCategory/{id}")]
-        public List<Category> GetSubtCategory(int id)
+        public List<CategoryResponse> GetSubtCategory(int id)
         {
             return _categoryService.GetSubCategory(id);     
         }
@@ -44,21 +47,36 @@ namespace ollsmart.Controllers
         }
 
         [HttpPost]
-        public Category Post([FromBody] Category category)
+        public IActionResult Post([FromBody] Category category)
         {
-            return _categoryService.SaveCategory(category);
+            try
+            {
+                var result= _categoryService.SaveCategory(category);
+                return Created("api/category", result);
+            }
+            catch (Exception ex)
+            {
+                
+                _logger.LogError(ex, "Error while saving category");
+                return StatusCode(500);
+            }
         }
 
-        // // PUT api/<UserController>/5
-        // [HttpPut("{id}")]
-        // public void Put(int id, [FromBody] string value)
-        // {
-        // }
-
-        // // DELETE api/<UserController>/5
-        // [HttpDelete("{id}")]
-        // public void Delete(int id)
-        // {
-        // }
+        [HttpPost("DeleteCategory")]
+        public IActionResult DeleteCategory(Category category)
+        {
+            try
+            {
+                var result= _categoryService.DeleteCategory( category);
+                return Ok( result);
+            }
+            catch (Exception ex)
+            {
+                
+                _logger.LogError(ex, "Error while deleting category");
+                return StatusCode(500);
+            }
+        }
+       
     }
 }

@@ -1,5 +1,3 @@
-import { Timestamp } from "rxjs";
-
 export class   Brand {
     brandId: number;
     brandName: string;

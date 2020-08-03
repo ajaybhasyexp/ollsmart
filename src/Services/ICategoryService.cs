@@ -15,9 +15,10 @@ namespace ollsmart.Services
         /// <returns>A user object after saving it in the db.</returns>
         Category SaveCategory(Category category);
         List<CategoryResponse> GetAll();
-        List<Category> GetParentCategory();
-        List<Category> GetSubCategory(int id);
+        List<CategoryResponse> GetParentCategory();
+        List<CategoryResponse> GetSubCategory(int id);
         Category GetCategoryById(int id);
+        bool DeleteCategory(Category category);
         
     }
 }

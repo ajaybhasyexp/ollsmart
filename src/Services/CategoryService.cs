@@ -21,18 +21,34 @@ namespace ollsmart.Services
                     into g from p in g.DefaultIfEmpty()
                   select new CategoryResponse() { CategoryId = c.CategoryId,  CategoryName = c.CategoryName, ParentCategoryId = c.ParentCategoryId,
                   ParentCategory = p.CategoryName,IsActive = c.IsActive,ImageUrl=c.ImageUrl,Description = c.Description }).OrderBy(x => x.ParentCategoryId).ThenBy(x => x.CategoryName).ToList();
-          //  return data.where(o => o.ParentCategoryId>0);
          
         }  
-        public List<Category> GetParentCategory()
+        public List<CategoryResponse> GetParentCategory()
         {
-            return _dbContext.Categories.Where(o => (o.ParentCategoryId==0)&&(o.IsActive == true)).ToList();
+            return (from c in _dbContext.Categories
+                    join p in _dbContext.Categories on c.ParentCategoryId equals p.CategoryId 
+                    into g from p in g.DefaultIfEmpty()
+                  select new CategoryResponse() { CategoryId = c.CategoryId,  CategoryName = c.CategoryName, ParentCategoryId = c.ParentCategoryId,
+                  ParentCategory = p.CategoryName,IsActive = c.IsActive,ImageUrl=c.ImageUrl,Description = c.Description }).OrderBy(x => x.ParentCategoryId).ThenBy(x => x.CategoryName).Where(o => (o.ParentCategoryId==0)&&(o.IsActive == true)).ToList();
           //  return data.where(o => o.ParentCategoryId>0);
          
         } 
-        public List<Category> GetSubCategory(int id)
+        public List<CategoryResponse> GetSubCategory(int id)
         {
-            return _dbContext.Categories.Where(o => (o.ParentCategoryId==id)&&(o.IsActive == true)).ToList();
+            if(id==0) {
+                return (from c in _dbContext.Categories
+                    join p in _dbContext.Categories on c.ParentCategoryId equals p.CategoryId 
+                    into g from p in g.DefaultIfEmpty()
+                  select new CategoryResponse() { CategoryId = c.CategoryId,  CategoryName = c.CategoryName, ParentCategoryId = c.ParentCategoryId,
+                  ParentCategory = p.CategoryName,IsActive = c.IsActive,ImageUrl=c.ImageUrl,Description = c.Description }).OrderBy(x => x.ParentCategoryId).ThenBy(x => x.CategoryName).Where(o => (o.ParentCategoryId!=0)&&(o.IsActive == true)).ToList();
+            }else {
+                  return (from c in _dbContext.Categories
+                    join p in _dbContext.Categories on c.ParentCategoryId equals p.CategoryId 
+                    into g from p in g.DefaultIfEmpty()
+                  select new CategoryResponse() { CategoryId = c.CategoryId,  CategoryName = c.CategoryName, ParentCategoryId = c.ParentCategoryId,
+                  ParentCategory = p.CategoryName,IsActive = c.IsActive,ImageUrl=c.ImageUrl,Description = c.Description }).OrderBy(x => x.ParentCategoryId).ThenBy(x => x.CategoryName).Where(o => (o.ParentCategoryId==id)&&(o.IsActive == true)).ToList();
+            }
+          
          
         } 
         public Category GetCategoryById(int id)
@@ -64,5 +80,19 @@ namespace ollsmart.Services
             }
             
         }
+        public bool DeleteCategory(Category category)
+        {
+            if (category != null)
+            {              
+                _dbContext.Categories.Remove(category);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            else
+            {
+                throw new ArgumentNullException("Delete Category");
+            }
+         
+        }  
     }
 }

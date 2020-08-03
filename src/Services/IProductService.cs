@@ -8,12 +8,11 @@ namespace ollsmart.Services
 {
     public interface IProductService
     {
-        /// <summary>
-        /// Saves the user object.
-        /// </summary>
-        /// <param name="product"></param>
-        /// <returns>A user object after saving it in the db.</returns>
         Product SaveProduct(Product product);
-        string GetProductById(int id);
+        Product GetProductById(int id);
+        List<ProductDetails> GetProducts();
+        List<ProductProperty> GetProductProperty();
+        ProductProperty GetProductPropertyById(int id);
+        ProductProperty SaveProductProperty(ProductProperty productProperty);
     }
 }

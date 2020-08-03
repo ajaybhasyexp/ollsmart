@@ -27,7 +27,7 @@ export class CategoriesComponent implements OnInit {
   categoryForm = new FormGroup({
     categoryName: new FormControl('', Validators.required), 
     categoryDescription: new FormControl('', Validators.required),
-    parentCategoryId: new FormControl('') 
+    parentCategoryId: new FormControl(null) 
   });
   baseUrl: string;
   modalReference: NgbModalRef;
@@ -51,19 +51,19 @@ export class CategoriesComponent implements OnInit {
     this.getParentCategories(); 
   }
   getCategories() {
-    this.http.get<Array<Category>>(this.baseUrl + 'api/category').subscribe(result => {
+    this.http.get<Array<Category>>(this.baseUrl + 'api/Category/SubCategory/0').subscribe(result => {
       this.categories = result;
       this.dataSource = new MatTableDataSource(this.categories);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     }, error => console.error(error));
   }
-  getParentCategories(){
-    this.http.get<Array<Category>>(this.baseUrl + 'api/Category/ParentCategory').subscribe(result => {
-      this.parentCategories = result;     
+  getParentCategories() {
+    this.http.get<Array<Category>>(this.baseUrl + 'api/category/ParentCategory').subscribe(result => {
+      this.parentCategories = result;
     }, error => console.error(error));
   }
-  
+
   OpenModal(content,id:number){
     this.category = new Category();   
     if(id>0)
@@ -102,18 +102,44 @@ export class CategoriesComponent implements OnInit {
       this.category.parentCategoryId= this.categoryForm.get('parentCategoryId').value;
       this.category.isActive=true;
       this.category.createdBy=1;
-      
       console.log(this.category); 
         this.http.post(this.baseUrl + 'api/Category', this.category).subscribe(
-          (response) => console.log(  response),
+          (response) => {
+            console.log( response);
+            this.modalReference.close();
+            this.getCategories(); 
+          },
           (error) => console.log(error)        
         )
         this.modalReference.close();
-
     } 
-
-    
   }
   
-
+  DeleteDialog(data){
+    console.log(data);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        console.log('ss');
+        this.http.post(this.baseUrl + 'api/Category/DeleteCategory', data).subscribe(
+          (response) => console.log(  response),
+          (error) => console.log(error)        
+        )
+        // Swal.fire(
+        //   'Deleted!',   
+        //   'Your file has been deleted.',
+        //   'success'
+        // )
+      }
+    })
+  }
 }
+
+

@@ -1,0 +1,86 @@
+<mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+  </mat-form-field> 
+  <mat-card>Units  <button  (click)="OpenModal(unitModal,0)"  mat-icon-button color="primary" aria-label="Example icon button with a add icon">
+    <mat-icon>add</mat-icon>
+  </button>  </mat-card>
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="Unit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Unit </th>
+        <td mat-cell *matCellDef="let row"> {{row.unitName}} </td>
+      </ng-container> 
+      
+      <ng-container matColumnDef="Description"> 
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+        <td mat-cell *matCellDef="let row"> {{row.description}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="Status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+        <td  mat-cell *matCellDef="let row"> 
+          <span *ngIf="!row.isActive"  class="badge badge-danger">Inactive</span>
+          <span *ngIf="row.isActive"  class="badge badge-success">Active</span> 
+      </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="Actions">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
+        <td mat-cell *matCellDef="let row" > 
+          <button  (click)="OpenModal(unitModal,row.unitId)" mat-icon-button  color="primary" aria-label="Example icon button with a edit icon">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button  (click)="DeleteDialog(row)"  mat-icon-button color="primary" aria-label="Example icon button with a delete icon">
+            <mat-icon>delete</mat-icon>
+          </button>        
+        </td>
+      </ng-container> 
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  
+      <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+      </tr>
+    </table> 
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
+  
+  <ng-template #unitModal let-modal>
+    <div class="modal-body">
+      <mat-dialog-content>
+        <h2 mat-dialog-title>Add New Unit</h2>
+        <br>
+         <form [formGroup]="unitForm" >
+        <div class="example-container">         
+            <div class="form-group">
+              <label for="unitName">Brand Name</label>
+              <input type="input" formControlName="unitName"  class="form-control" id="unitName">
+              <div *ngIf="unitForm.controls.unitName.hasError('required')  && btnSubmited ">  
+                <div class="alert alert-danger">
+                  Batch Name is Required.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="unitDescription">Unit Description</label>
+              <textarea class="form-control" formControlName="unitDescription"id="unitDescription" rows="3"></textarea>
+              <div *ngIf="unitForm.controls.unitDescription.hasError('required')  && btnSubmited ">  
+                <div class="alert alert-danger">
+                  Description is Required.
+                </div>
+              </div>
+            </div>
+          
+            <br>
+            <button (click)="SaveUnitDetails()" mat-raised-button color="primary">Submit</button>
+            &nbsp;
+            <button (click)="ClearForm()" mat-raised-button color="primary" >Clear</button>
+          </div>    
+        </form>  
+      </mat-dialog-content> 
+        
+    </div>
+  </ng-template>

@@ -16,15 +16,13 @@ namespace ollsmart.Services
         }
         public List<Brand>  GetAll()
         {
-            return _dbContext.Brands.ToList();
-          //  return data.where(o => o.ParentCategoryId>0);
+            return _dbContext.Brands.OrderBy(x => x.BrandName).ToList();
          
         }   
          public Brand GetBrandById(int id)
 
         {
             return _dbContext.Brands.Where(o => o.BrandId==id).FirstOrDefault();
-          //  return data.where(o => o.ParentCategoryId>0);
          
         } 
         public bool DeleteBrand(Brand brand)

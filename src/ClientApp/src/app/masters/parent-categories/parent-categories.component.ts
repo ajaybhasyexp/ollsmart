@@ -94,12 +94,14 @@ export class ParentCategoriesComponent implements OnInit {
       this.category.isActive=true;
       this.category.createdBy=1;
       
-      console.log(this.category); 
-        this.http.post(this.baseUrl + 'api/Category', this.category).subscribe(
-          (response) => console.log(  response),
+      this.http.post(this.baseUrl + 'api/Category', this.category).subscribe(
+          (response) => {
+            console.log( response);
+            this.modalReference.close();
+            this.getParentCategories(); 
+          },
           (error) => console.log(error)        
         )
-        this.modalReference.close();
 
     } 
 

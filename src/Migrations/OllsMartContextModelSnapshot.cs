@@ -122,6 +122,101 @@ namespace OllsMart.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("Models.Entities.ProductAttribute", b =>
+                {
+                    b.Property<int>("ProductAttributeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ProductId")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("ProductId1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PropertyValue")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("UnitId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductAttributeId");
+
+                    b.HasIndex("ProductId1");
+
+                    b.ToTable("ProductAttributes");
+                });
+
+            modelBuilder.Entity("Models.Entities.ProductProperty", b =>
+                {
+                    b.Property<int>("ProductPropertyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PropertyName")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("ProductPropertyId");
+
+                    b.ToTable("ProductProperties");
+                });
+
+            modelBuilder.Entity("Models.Entities.Unit", b =>
+                {
+                    b.Property<int>("UnitId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("UnitName")
+                        .HasColumnType("text");
+
+                    b.HasKey("UnitId");
+
+                    b.ToTable("Units");
+                });
+
             modelBuilder.Entity("Models.Entities.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -155,6 +250,13 @@ namespace OllsMart.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Models.Entities.ProductAttribute", b =>
+                {
+                    b.HasOne("Models.Entities.Product", null)
+                        .WithMany("ProductAttribute")
+                        .HasForeignKey("ProductId1");
                 });
 #pragma warning restore 612, 618
         }
