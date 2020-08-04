@@ -22,12 +22,14 @@ export class CategoriesComponent implements OnInit {
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
+  
 
   public btnSubmited = false;
   categoryForm = new FormGroup({
     categoryName: new FormControl('', Validators.required), 
     categoryDescription: new FormControl('', Validators.required),
-    parentCategoryId: new FormControl(null) 
+    parentCategoryId: new FormControl(null,Validators.required) ,
+    status: new FormControl(true,Validators.required) ,
   });
   baseUrl: string;
   modalReference: NgbModalRef;
@@ -49,6 +51,7 @@ export class CategoriesComponent implements OnInit {
   ngOnInit() {
     this.getCategories();
     this.getParentCategories(); 
+    
   }
   getCategories() {
     this.http.get<Array<Category>>(this.baseUrl + 'api/Category/SubCategory/0').subscribe(result => {
@@ -60,7 +63,7 @@ export class CategoriesComponent implements OnInit {
   }
   getParentCategories() {
     this.http.get<Array<Category>>(this.baseUrl + 'api/category/ParentCategory').subscribe(result => {
-      this.parentCategories = result;
+      this.parentCategories = result.filter(t=>t.isActive ===true);
     }, error => console.error(error));
   }
 
@@ -85,7 +88,8 @@ export class CategoriesComponent implements OnInit {
     this.categoryForm.setValue({
       categoryName: data.categoryName,
       categoryDescription: data.description,
-      parentCategoryId: data.parentCategoryId
+      parentCategoryId: data.parentCategoryId,
+      status:data.isActive
     });
   }
   clearForm() {
@@ -95,14 +99,14 @@ export class CategoriesComponent implements OnInit {
   }
   saveCategoryDetails(){
     this.btnSubmited = true;
-    if (this.categoryForm.valid) {   
+    if (this.categoryForm.valid) 
+    {   
       this.btnSubmited = false;    
       this.category.categoryName=this.categoryForm.get('categoryName').value; 
       this.category.description=this.categoryForm.get('categoryDescription').value; 
       this.category.parentCategoryId= this.categoryForm.get('parentCategoryId').value;
-      this.category.isActive=true;
+      this.category.isActive=this.categoryForm.get('status').value;;
       this.category.createdBy=1;
-      console.log(this.category); 
         this.http.post(this.baseUrl + 'api/Category', this.category).subscribe(
           (response) => {
             console.log( response);
@@ -113,6 +117,10 @@ export class CategoriesComponent implements OnInit {
         )
         this.modalReference.close();
     } 
+    else
+    {
+      console.log('data');
+    }
   }
   
   DeleteDialog(data){
@@ -129,14 +137,10 @@ export class CategoriesComponent implements OnInit {
       if (result.value) {
         console.log('ss');
         this.http.post(this.baseUrl + 'api/Category/DeleteCategory', data).subscribe(
-          (response) => console.log(  response),
+          (response) => {this.getCategories(); },
           (error) => console.log(error)        
         )
-        // Swal.fire(
-        //   'Deleted!',   
-        //   'Your file has been deleted.',
-        //   'success'
-        // )
+       
       }
     })
   }

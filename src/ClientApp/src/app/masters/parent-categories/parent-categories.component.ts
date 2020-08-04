@@ -27,6 +27,7 @@ export class ParentCategoriesComponent implements OnInit {
   parentCategoryForm= new FormGroup({
     categoryName: new FormControl('', Validators.required), 
     categoryDescription: new FormControl('', Validators.required),
+    status:new FormControl('', Validators.required),
   });
   baseUrl: string;
   modalReference: NgbModalRef;
@@ -77,7 +78,8 @@ export class ParentCategoriesComponent implements OnInit {
  
     this.parentCategoryForm.setValue({
       categoryName: data.categoryName,
-      categoryDescription: data.description
+      categoryDescription: data.description,
+      status:data.isActive
     });
   }
   clearForm() {
@@ -91,7 +93,7 @@ export class ParentCategoriesComponent implements OnInit {
       this.btnSubmited = false;    
       this.category.categoryName=this.parentCategoryForm.get('categoryName').value; 
       this.category.description=this.parentCategoryForm.get('categoryDescription').value; 
-      this.category.isActive=true;
+      this.category.isActive= this.parentCategoryForm.get('status').value;
       this.category.createdBy=1;
       
       this.http.post(this.baseUrl + 'api/Category', this.category).subscribe(

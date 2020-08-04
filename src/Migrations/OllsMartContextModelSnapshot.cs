@@ -252,6 +252,32 @@ namespace OllsMart.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Models.Entities.UserRole", b =>
+                {
+                    b.Property<int>("UserRoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("UserRoleName")
+                        .HasColumnType("text");
+
+                    b.HasKey("UserRoleId");
+
+                    b.ToTable("UserRoles");
+                });
+
             modelBuilder.Entity("Models.Entities.ProductAttribute", b =>
                 {
                     b.HasOne("Models.Entities.Product", null)

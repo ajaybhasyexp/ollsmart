@@ -2,9 +2,8 @@
 using Models.Entities;
 using ollsmart.Services;
 using System;
-using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ollsmart.Controllers
 {
@@ -13,42 +12,87 @@ namespace ollsmart.Controllers
     public class UserController : ControllerBase
     {
         private IUserService _userService { get; set;   }
-        public UserController(IUserService userService)
+        private ILogger<UserController> _logger { get; set;   }
+        public UserController(IUserService userService ,ILogger<UserController> logger)
         {
             _userService = userService;
+            _logger=logger;
         }
 
-        // GET: api/<UserController>
-        [HttpGet]
-        public IEnumerable<User> Get()
+        [HttpGet("UserRoles")]
+        public IActionResult GetUserRoles()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result= _userService.GetUserRoles();
+               return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while fetching User Role list");
+                return StatusCode(500);
+            }
         }
+        [HttpGet("UserRoleById/{id}")]
+        public IActionResult GetUserRoleById(int id)
+        {
+            try
+            {
+                var result= _userService.GetUserRoleById(id);
+               return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while fetching User Role by id");
+                return StatusCode(500);
+            }
+        }
+        [HttpPost("UserRole")]
+        public IActionResult SaveUserRole( UserRole userRole)
+        {
+             try
+            {
+                 _userService.SaveUserRole(userRole);
+                return Created("api/User/UserRole", userRole);
+            }
+            catch (Exception ex)
+            {
+                
+                _logger.LogError(ex, "Error while saving brand");
+                return StatusCode(500);
+            }
+        }
+        // // GET: api/<UserController>
+        // [HttpGet]
+        // public IEnumerable<User> Get()
+        // {
+        //     throw new NotImplementedException();
+        // }
 
-        // GET api/<UserController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        // // GET api/<UserController>/5
+        // [HttpGet("{id}")]
+        // public string Get(int id)
+        // {
+        //     return "value";
+        // }
 
-        // POST api/<UserController>
-        [HttpPost]
-        public void Post([FromBody] User user)
-        {
-            _userService.SaveUser(user);
-        }
+        // // POST api/<UserController>
+        // [HttpPost]
+        // public void Post([FromBody] User user)
+        // {
+        //     _userService.SaveUser(user);
+        // }
 
-        // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        // // PUT api/<UserController>/5
+        // [HttpPut("{id}")]
+        // public void Put(int id, [FromBody] string value)
+        // {
+        // }
 
-        // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        // // DELETE api/<UserController>/5
+        // [HttpDelete("{id}")]
+        // public void Delete(int id)
+        // {
+        // }
     }
 }

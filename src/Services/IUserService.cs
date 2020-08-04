@@ -8,11 +8,10 @@ namespace ollsmart.Services
 {
     public interface IUserService
     {
-        /// <summary>
-        /// Saves the user object.
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns>A user object after saving it in the db.</returns>
+        
+        List<UserRole>  GetUserRoles();
+        UserRole GetUserRoleById(int id);
+        UserRole SaveUserRole( UserRole userRole);
         User SaveUser(User user);
     }
 }

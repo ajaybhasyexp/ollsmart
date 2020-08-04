@@ -54,6 +54,9 @@
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 </div>
 
+
+<app-product-attributes></app-product-attributes>
+
 <ng-template #productModal let-modal>
     <div class="modal-body">
       <mat-dialog-content>
@@ -64,12 +67,20 @@
                 <div class="form-group">
                   <label for="productName">Product Name</label>
                   <input type="input" formControlName="productName"  class="form-control" id="productName">
-                  
+                  <div *ngIf="productForm.controls.productName.hasError('required')  && btnSubmited ">  
+                    <div class="alert alert-danger">
+                     Product Name is Required.
+                    </div>
+                  </div>
                 </div>
                 <div class="form-group">
                   <label for="productDescription">Product Description</label>
                   <textarea class="form-control" formControlName="productDescription"id="productDescription" rows="3"></textarea>
-           
+                  <div *ngIf="productForm.controls.productDescription.hasError('required')  && btnSubmited ">  
+                    <div class="alert alert-danger">
+                     Product Description is Required.
+                    </div>
+                  </div> 
                 </div> 
                 <div class="form-group">
                     <label for="categoryId">Category</label>
@@ -77,6 +88,11 @@
                       <option [ngValue]="null">Choose a  Category</option>
                       <option [ngValue]="category.categoryId" *ngFor="let category of categories">{{category.categoryName}}</option>
                     </select>
+                    <div *ngIf="productForm.controls.categoryId.hasError('required')  && btnSubmited ">  
+                      <div class="alert alert-danger">
+                       Category is Required.
+                      </div>
+                    </div>
                 </div> 
                 <div class="form-group">
                     <label for="brandId">Brand</label>
@@ -84,7 +100,24 @@
                       <option [ngValue]="null">Choose a  Brand</option>
                       <option [ngValue]="brand.brandId" *ngFor="let brand of brands">{{brand.brandName}}</option>
                     </select>
+                    <div *ngIf="productForm.controls.brandId.hasError('required')  && btnSubmited ">  
+                      <div class="alert alert-danger">
+                       Brand is Required.
+                      </div>
+                    </div>
                 </div> 
+                <div class="form-group">
+                  <label for="company" style="width: 15%;">Status</label>
+                  <label class="radio-inline">
+                      <input type="radio"  formControlName="status" [value]="true">  Active
+                      <input type="radio" formControlName="status" [value]="false"> Inactive
+                    </label>
+                  <div *ngIf="productForm.controls.status.hasError('required') && btnSubmited ">  
+                    <div class="alert alert-danger">
+                      Status is Required.
+                    </div>
+                  </div>
+               </div>
                 <br>
                 <button (click)="SaveProduct()" mat-raised-button color="primary">Submit</button>
                 &nbsp;
@@ -95,43 +128,4 @@
     </div> 
   </ng-template>
 
-  <!-- <ng-template #productModal let-modal>
-    <div class="modal-body">
-      <mat-dialog-content>
-        <h2 mat-dialog-title>Add New Product</h2>
-        <br>
-        <form [formGroup]="productForm" >
-            <div class="example-container">         
-                <div class="form-group">
-                  <label for="productName">Product Name</label>
-                  <input type="input" formControlName="productName"  class="form-control" id="productName">
-                  
-                </div>
-                <div class="form-group">
-                  <label for="productDescription">Product Description</label>
-                  <textarea class="form-control" formControlName="productDescription"id="productDescription" rows="3"></textarea>
-           
-                </div> 
-                <div class="form-group">
-                    <label for="categoryId">Category</label>
-                      <select  formControlName="categoryId"   class="form-control" id="categoryId">
-                      <option [ngValue]="null">Choose a  Category</option>
-                      <option [ngValue]="category.categoryId" *ngFor="let category of categories">{{category.categoryName}}</option>
-                    </select>
-                </div> 
-                <div class="form-group">
-                    <label for="brandId">Brand</label>
-                      <select  formControlName="brandId"   class="form-control" id="brandId">
-                      <option [ngValue]="null">Choose a  Brand</option>
-                      <option [ngValue]="brand.brandId" *ngFor="let brand of brands">{{brand.brandName}}</option>
-                    </select>
-                </div> 
-                <br>
-                <button (click)="saveCategoryDetails()" mat-raised-button color="primary">Submit</button>
-                &nbsp;
-                <button (click)="clearForm()" mat-raised-button color="primary" >Clear</button>
-              </div>    
-            </form> 
-      </mat-dialog-content>    
-    </div> 
-  </ng-template> -->
+ 

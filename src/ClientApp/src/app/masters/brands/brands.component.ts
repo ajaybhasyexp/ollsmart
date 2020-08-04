@@ -29,7 +29,8 @@ export class BrandsComponent implements OnInit {
 
   brandForm = new FormGroup({
     brandName: new FormControl('', Validators.required), 
-    brandDescription: new FormControl('', Validators.required)
+    brandDescription: new FormControl('', Validators.required),
+    status: new FormControl('true', Validators.required)
   });
   baseUrl: string;
   constructor(private http: HttpClient, 
@@ -80,7 +81,8 @@ export class BrandsComponent implements OnInit {
     this.brand=data;
     this.brandForm.setValue({
       brandName: data.brandName,
-      brandDescription: data.description
+      brandDescription: data.description,
+      status:data.isActive
     });
   }
 
@@ -90,7 +92,7 @@ export class BrandsComponent implements OnInit {
       this.btnSubmited = false;    
       this.brand.brandName=this.brandForm.get('brandName').value; 
       this.brand.description=this.brandForm.get('brandDescription').value; 
-      this.brand.isActive=true;
+      this.brand.isActive=this.brandForm.get('status').value; 
       this.brand.createdBy=1;
       this.http.post(this.baseUrl + 'api/Brand', this.brand).subscribe(
         (response) => {

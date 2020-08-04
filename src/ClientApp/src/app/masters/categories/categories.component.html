@@ -2,7 +2,7 @@
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
   </mat-form-field> 
-  <mat-card>Categories  <button  (click)="OpenModal(categoryModal,0)"  mat-icon-button color="primary" aria-label="Example icon button with a add icon">
+  <mat-card>Sub Categories  <button  (click)="OpenModal(categoryModal,0)"  mat-icon-button color="primary" aria-label="Example icon button with a add icon">
     <mat-icon>add</mat-icon>
   </button>  </mat-card>
   <div class="mat-elevation-z8">
@@ -87,7 +87,24 @@
                 <option [ngValue]="null">Choose a Parent Category</option>
                 <option [ngValue]="parentCategory.categoryId" *ngFor="let parentCategory of parentCategories">{{parentCategory.categoryName}}</option>
               </select>
-          </div> 
+              <div *ngIf="categoryForm.controls.parentCategoryId.hasError('required')  && btnSubmited ">  
+                <div class="alert alert-danger">
+                  Parent Category is Required.
+                </div>
+              </div>
+            </div> 
+            <div class="form-group">
+              <label for="company" style="width: 15%;">Status</label>
+              <label class="radio-inline">
+                  <input type="radio"  formControlName="status" [value]="true">  Active
+                  <input type="radio" formControlName="status" [value]="false"> Inactive
+                </label>
+              <div *ngIf="categoryForm.controls.status.hasError('required') && btnSubmited ">  
+                <div class="alert alert-danger">
+                  Status is Required.
+                </div>
+              </div>
+           </div>
             <br>
             <button (click)="saveCategoryDetails()" mat-raised-button color="primary">Submit</button>
             &nbsp;

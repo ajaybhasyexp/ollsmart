@@ -15,6 +15,38 @@ namespace ollsmart.Services
             _dbContext = ollsMartContext;
         }
 
+        public List<UserRole>  GetUserRoles()
+        {
+           return _dbContext.UserRoles.OrderBy(x => x.UserRoleName).ToList();
+         
+        } 
+        public UserRole GetUserRoleById(int id)
+        {
+            return _dbContext.UserRoles.Where(o => o.UserRoleId==id).FirstOrDefault();        
+        }  
+        public UserRole SaveUserRole( UserRole userRole)
+        {
+            if (userRole != null)
+            {
+                if (userRole.UserRoleId == 0)
+                {
+                    userRole.Timestamp = DateTime.UtcNow;
+                    userRole.CreatedTime = DateTime.UtcNow;
+                    _dbContext.UserRoles.Add(userRole);
+                }
+                else
+                {
+                    userRole.Timestamp = DateTime.UtcNow;
+                    _dbContext.UserRoles.Update(userRole);
+                }
+                _dbContext.SaveChanges();
+                return userRole;
+            }
+            else
+            {
+                throw new ArgumentNullException("UserRole");
+            }
+        }
         public User SaveUser(User user)
         {
             if (user != null)

@@ -27,7 +27,8 @@ export class UnitsComponent implements OnInit {
 
   unitForm = new FormGroup({
     unitName: new FormControl('', Validators.required), 
-    unitDescription: new FormControl('', Validators.required)
+    unitDescription: new FormControl('', Validators.required),
+    status: new FormControl('', Validators.required)
   });
   baseUrl: string;
   constructor(  private http: HttpClient, 
@@ -76,7 +77,8 @@ export class UnitsComponent implements OnInit {
     this.unit=data;
     this.unitForm.setValue({
       unitName: data.unitName,
-      unitDescription: data.description
+      unitDescription: data.description,
+      status:data.isActive
     });
   }
   ClearForm() {
@@ -89,7 +91,8 @@ export class UnitsComponent implements OnInit {
       this.btnSubmited = false;    
       this.unit.unitName=this.unitForm.get('unitName').value; 
       this.unit.description=this.unitForm.get('unitDescription').value; 
-      this.unit.isActive=true;
+      this.unit.isActive=this.unitForm.get('status').value; 
+
       this.unit.createdBy=1;
         this.http.post(this.baseUrl + 'api/Unit', this.unit).subscribe(
           (response) => console.log(  response),

@@ -27,7 +27,8 @@ export class ProductPropertyComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   productPropertyForm = new FormGroup({
-   productPropertyName: new FormControl('', Validators.required)
+   productPropertyName: new FormControl('', Validators.required),
+   status: new FormControl('', Validators.required)
   });
   baseUrl: string;
   constructor(private http: HttpClient, 
@@ -76,6 +77,7 @@ export class ProductPropertyComponent implements OnInit {
     this.productProperty=data;
     this.productPropertyForm.setValue({
       productPropertyName: data.propertyName,
+      status:data.isActive
     });
   }
 
@@ -84,9 +86,8 @@ export class ProductPropertyComponent implements OnInit {
     if (this.productPropertyForm.valid) {   
       this.btnSubmited = false;    
       this.productProperty.propertyName=this.productPropertyForm.get('productPropertyName').value; 
-      this.productProperty.isActive=true;
+      this.productProperty.isActive=this.productPropertyForm.get('status').value; ;
       this.productProperty.createdBy=1;
-      console.log(this.productProperty);
       this.http.post(this.baseUrl + 'api/product/productProperty', this.productProperty).subscribe(
         (response) => {
           console.log( response);

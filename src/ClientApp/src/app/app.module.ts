@@ -15,6 +15,7 @@ import { BrandsComponent } from './masters/brands/brands.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
 import {MatDialogModule} from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material';
 // import { FormWizardModule } from 'angular2-wizard';
 
 // import {DialogContentExampleDialog} from './masters/brands/brands.component';
@@ -36,6 +37,7 @@ import { ParentCategoriesComponent } from './masters/parent-categories/parent-ca
 import { ProductsComponent } from './masters/products/products.component';
 import { UnitsComponent } from './masters/units/units.component';
 import { ProductPropertyComponent } from './masters/product-property/product-property.component';
+import { ProductAttributesComponent } from './masters/product-attributes/product-attributes.component';
 
 
 @NgModule({
@@ -51,7 +53,8 @@ import { ProductPropertyComponent } from './masters/product-property/product-pro
     ParentCategoriesComponent,
     ProductsComponent,
     UnitsComponent,
-    ProductPropertyComponent
+    ProductPropertyComponent,
+    ProductAttributesComponent
     // DialogContentExampleDialog
   ],
   imports: [
@@ -72,6 +75,7 @@ import { ProductPropertyComponent } from './masters/product-property/product-pro
     MatDialogModule,
     ReactiveFormsModule,
     NgbModule,
+    MatTabsModule,
     // FormWizardModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },

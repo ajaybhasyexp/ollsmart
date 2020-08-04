@@ -73,7 +73,18 @@
                 </div>
               </div>
             </div>
-          
+            <div class="form-group">
+              <label for="company" style="width: 15%;">Status</label>
+              <label class="radio-inline">
+                  <input type="radio"  formControlName="status" [value]="true">  Active
+                  <input type="radio" formControlName="status" [value]="false"> Inactive
+                </label>
+              <div *ngIf="brandForm.controls.status.hasError('required') && btnSubmited ">  
+                <div class="alert alert-danger">
+                  Status is Required.
+                </div>
+              </div>
+           </div>
             <br>
             <button (click)="SaveBrandDetails()" mat-raised-button color="primary">Submit</button>
             &nbsp;

@@ -29,7 +29,7 @@ namespace ollsmart.Services
                     join p in _dbContext.Categories on c.ParentCategoryId equals p.CategoryId 
                     into g from p in g.DefaultIfEmpty()
                   select new CategoryResponse() { CategoryId = c.CategoryId,  CategoryName = c.CategoryName, ParentCategoryId = c.ParentCategoryId,
-                  ParentCategory = p.CategoryName,IsActive = c.IsActive,ImageUrl=c.ImageUrl,Description = c.Description }).OrderBy(x => x.ParentCategoryId).ThenBy(x => x.CategoryName).Where(o => (o.ParentCategoryId==0)&&(o.IsActive == true)).ToList();
+                  ParentCategory = p.CategoryName,IsActive = c.IsActive,ImageUrl=c.ImageUrl,Description = c.Description }).OrderBy(x => x.ParentCategoryId).ThenBy(x => x.CategoryName).Where(o => (o.ParentCategoryId==0)).ToList();
           //  return data.where(o => o.ParentCategoryId>0);
          
         } 
@@ -40,13 +40,13 @@ namespace ollsmart.Services
                     join p in _dbContext.Categories on c.ParentCategoryId equals p.CategoryId 
                     into g from p in g.DefaultIfEmpty()
                   select new CategoryResponse() { CategoryId = c.CategoryId,  CategoryName = c.CategoryName, ParentCategoryId = c.ParentCategoryId,
-                  ParentCategory = p.CategoryName,IsActive = c.IsActive,ImageUrl=c.ImageUrl,Description = c.Description }).OrderBy(x => x.ParentCategoryId).ThenBy(x => x.CategoryName).Where(o => (o.ParentCategoryId!=0)&&(o.IsActive == true)).ToList();
+                  ParentCategory = p.CategoryName,IsActive = c.IsActive,ImageUrl=c.ImageUrl,Description = c.Description }).OrderBy(x => x.ParentCategoryId).ThenBy(x => x.CategoryName).Where(o => (o.ParentCategoryId!=0)).ToList();
             }else {
                   return (from c in _dbContext.Categories
                     join p in _dbContext.Categories on c.ParentCategoryId equals p.CategoryId 
                     into g from p in g.DefaultIfEmpty()
                   select new CategoryResponse() { CategoryId = c.CategoryId,  CategoryName = c.CategoryName, ParentCategoryId = c.ParentCategoryId,
-                  ParentCategory = p.CategoryName,IsActive = c.IsActive,ImageUrl=c.ImageUrl,Description = c.Description }).OrderBy(x => x.ParentCategoryId).ThenBy(x => x.CategoryName).Where(o => (o.ParentCategoryId==id)&&(o.IsActive == true)).ToList();
+                  ParentCategory = p.CategoryName,IsActive = c.IsActive,ImageUrl=c.ImageUrl,Description = c.Description }).OrderBy(x => x.ParentCategoryId).ThenBy(x => x.CategoryName).Where(o => (o.ParentCategoryId==id)).ToList();
             }
           
          

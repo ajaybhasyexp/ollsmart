@@ -38,8 +38,9 @@ export class ProductsComponent implements OnInit {
   productForm= new FormGroup({
     productName: new FormControl('', Validators.required), 
     productDescription: new FormControl('', Validators.required),
-    brandId: new FormControl(null),
-    categoryId: new FormControl(null),
+    brandId: new FormControl(null, Validators.required),
+    categoryId: new FormControl(null, Validators.required),
+    status: new FormControl(null, Validators.required),
   });
 
   constructor(private http: HttpClient, 
@@ -51,8 +52,7 @@ export class ProductsComponent implements OnInit {
   ngOnInit() {
     this.getProducts();
     this.getCategories();
-    this.getBrands();
-    this.getUnits();
+
   }
   clearForm() {
     this.btnSubmited = false;
@@ -78,17 +78,13 @@ export class ProductsComponent implements OnInit {
   }
   getBrands() {
     this.http.get<Array<Brand>>(this.baseUrl + 'api/brand').subscribe(result => {
-      this.brands = result;
+      this.brands = result.filter(t=>t.isActive ===true);
     }, error => console.error(error));
   }
-  getUnits() {
-    this.http.get<Array<Unit>>(this.baseUrl + 'api/unit').subscribe(result => {
-      this.units = result;
-    }, error => console.error(error));
-  }
+
   getCategories() {
     this.http.get<Array<Category>>(this.baseUrl + 'api/Category/SubCategory/0').subscribe(result => {
-      this.categories = result;
+      this.categories = result.filter(t=>t.isActive ===true);
     }, error => console.error(error));
   }
   OpenModal(content,id:number){   
@@ -111,6 +107,7 @@ export class ProductsComponent implements OnInit {
       productDescription: data.description,
       categoryId: data.categoryId,
       brandId: data.brandId,
+      status:data.isActive
     });
   }
   SaveProduct() {
@@ -121,7 +118,7 @@ export class ProductsComponent implements OnInit {
       this.product.description=this.productForm.get('productDescription').value; 
       this.product.categoryId= this.productForm.get('categoryId').value;
       this.product.brandId= this.productForm.get('brandId').value;
-      this.product.isActive=true;
+      this.product.isActive=this.productForm.get('status').value;
       this.product.createdBy=1;
       console.log(this.product);
       this.http.post(this.baseUrl + 'api/product', this.product).subscribe(
@@ -131,8 +128,6 @@ export class ProductsComponent implements OnInit {
         },
           (error) => console.log(error)        
         )
-
-      // this.getProductProperties(); 
     }  
   }
   ClearForm() {

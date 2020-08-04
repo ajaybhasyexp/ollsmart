@@ -13,6 +13,7 @@ namespace OllsMart
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Unit> Units { get; set; }
         public DbSet<ProductProperty> ProductProperties { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
 
         private IConfiguration _config;
         public OllsMartContext(DbContextOptions<OllsMartContext> options,
@@ -45,6 +46,9 @@ namespace OllsMart
             var productProperty = modelBuilder.Entity<ProductProperty>();
             productProperty.HasKey(p => p.ProductPropertyId);
             
+            var userRole = modelBuilder.Entity<UserRole>();
+            userRole.HasKey(p => p.UserRoleId);
+
         }
 
     }
