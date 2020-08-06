@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 import { ProductProperty } from '../../models/ProductProperty';
 import { Unit } from '../../models/Unit';
 import { Product } from '../../models/Product';
+import { ProductAttribute } from '../../models/ProductAttribute';
 @Component({
   selector: 'app-product-attributes',
   templateUrl: './product-attributes.component.html',
@@ -25,14 +26,16 @@ export class ProductAttributesComponent implements OnInit {
   properties: Array<ProductProperty> = new Array<ProductProperty>();
   units: Array<Unit> = new Array<Unit>();
   products:Array<Product> = new Array<Product>();
+  productAttributes:Array<ProductAttribute> = new Array<ProductAttribute>();
+  productAttribute:ProductAttribute = new ProductAttribute();
 
   productAttributeForm= new FormGroup({
     productId: new FormControl(null, Validators.required), 
     propertyId: new FormControl(null, Validators.required),
     propertyValue: new FormControl('', Validators.required),
     unitId: new FormControl(null, Validators.required),
-    mrp: new FormControl('', Validators.required),
-    rate: new FormControl('', Validators.required),
+    mrp: new FormControl(null, Validators.required),
+    rate: new FormControl(null, Validators.required),
     status: new FormControl(null, Validators.required),
   });
   displayedColumns: string[] = ['Product','Description','Category','Brand','Status','Actions'];
@@ -76,9 +79,39 @@ export class ProductAttributesComponent implements OnInit {
       // }, error => console.error(error));
     }
     else{
-      // this.ClearForm();
+       this.ClearForm();
     }
       this.modalReference=this.modalService.open(content);
   }
+  ClearForm() {
+    this.btnSubmited = false;
+    this.productAttributeForm.reset();
+  }
+  SaveProductAttribute(){
+    this.btnSubmited = true;
+    if (this.productAttributeForm.valid) {   
+      this.btnSubmited = false;    
+      this.productAttribute.productId=this.productAttributeForm.get('productId').value; 
+      this.productAttribute.propertyId=this.productAttributeForm.get('propertyId').value;
+      this.productAttribute.propertyValue=this.productAttributeForm.get('propertyValue').value;  
+      this.productAttribute.unitId=this.productAttributeForm.get('unitId').value;  
+      this.productAttribute.mrp=parseFloat(this.productAttributeForm.get('mrp').value);  
+      this.productAttribute.rate=parseFloat(this.productAttributeForm.get('rate').value);  
+      this.productAttribute.isActive=this.productAttributeForm.get('status').value; 
+
+      this.productAttribute.createdBy=1;
+      console.log(this.productAttribute);
+      
+      this.http.post(this.baseUrl + 'api/Product/ProductAttribute', this.productAttribute).subscribe(
+          (response) => {
+            this.modalReference.close();
+            // this.getUnits(); 
+          },
+          (error) => console.log(error)        
+        )
+    } 
+    
+  }
+  
 
 }

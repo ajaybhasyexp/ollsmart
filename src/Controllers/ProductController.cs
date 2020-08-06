@@ -118,6 +118,22 @@ namespace ollsmart.Controllers
                 return StatusCode(500);
             }
         }
+        
+        [HttpPost("ProductAttribute")]
+        public IActionResult SaveProductProperty( ProductAttribute productAttribute)
+        {
+             try
+            {
+                _productService.SaveProductAttribute(productAttribute);
+                return Created("api/Product/ProductAttribute", productAttribute);
+            }
+            catch (Exception ex)
+            {
+                
+                _logger.LogError(ex, "Error while saving Product Attribute");
+                return StatusCode(500);
+            }
+        }
        
     }
 }

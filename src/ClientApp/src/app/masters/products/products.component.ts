@@ -52,6 +52,7 @@ export class ProductsComponent implements OnInit {
   ngOnInit() {
     this.getProducts();
     this.getCategories();
+    this.getBrands();
 
   }
   clearForm() {

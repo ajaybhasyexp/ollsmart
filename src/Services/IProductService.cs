@@ -14,5 +14,6 @@ namespace ollsmart.Services
         List<ProductProperty> GetProductProperty();
         ProductProperty GetProductPropertyById(int id);
         ProductProperty SaveProductProperty(ProductProperty productProperty);
+        ProductAttribute SaveProductAttribute(ProductAttribute productAttribute);
     }
 }

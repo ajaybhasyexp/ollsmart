@@ -11,9 +11,8 @@
   <ng-template #productAttributeModal let-modal>
     <div class="modal-body">
       <mat-dialog-content>
-        <h2 mat-dialog-title>Add New Product Attribute</h2>
-        <br>
-        <form [formGroup]="productAttributeForm" >
+        <h2 mat-dialog-title>Product Attribute</h2>
+        <form [formGroup]="productAttributeForm"  >
             <div class="example-container">         
                 <div class="form-group">
                   <label for="productId">Product</label>
@@ -27,27 +26,29 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group">
-                    <label for="propertyId">Product Property</label>
-                    <select  formControlName="propertyId"   class="form-control" id="propertyId">
-                      <option [ngValue]="null">Choose a  Property</option>
-                      <option [ngValue]="property.propertyId" *ngFor="let property of properties">{{property.propertyName}}</option>
-                    </select>
-                    <div *ngIf="productAttributeForm.controls.propertyId.hasError('required')  && btnSubmited ">  
-                      <div class="alert alert-danger">
-                      Product Property is Required.
+                <div class="form-row">
+                    <div class="col-xl-6 form-group">
+                        <label for="propertyId">Product Property</label>
+                        <select  formControlName="propertyId"   class="form-control" id="propertyId">
+                          <option [ngValue]="null">Choose a  Property</option>
+                          <option [ngValue]="property.productPropertyId" *ngFor="let property of properties">{{property.propertyName}}</option>
+                        </select>
+                        <div *ngIf="productAttributeForm.controls.propertyId.hasError('required')  && btnSubmited ">  
+                          <div class="alert alert-danger">
+                          Product Property is Required.
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="propertyValue">Property Value</label>
-                    <input type="input" formControlName="propertyValue"  class="form-control" id="propertyValue">
-                    <div *ngIf="productAttributeForm.controls.propertyValue.hasError('required')  && btnSubmited ">  
-                      <div class="alert alert-danger">
-                        Property Value is Required.
+                      <div class="col-xl-6 form-group">
+                        <label for="propertyValue">Property Value</label>
+                        <input type="input" formControlName="propertyValue"  class="form-control" id="propertyValue">
+                        <div *ngIf="productAttributeForm.controls.propertyValue.hasError('required')  && btnSubmited ">  
+                          <div class="alert alert-danger">
+                            Property Value is Required.
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                </div>
                 <div class="form-group">
                     <label for="unitId">Unit</label>
                       <select  formControlName="unitId"   class="form-control" id="unitId">
@@ -60,25 +61,27 @@
                       </div>
                     </div>
                 </div> 
-                <div class="form-group">
-                    <label for="mrp">MRP</label>
-                    <input type="input" formControlName="mrp"  class="form-control" id="mrp">
-                    <div *ngIf="productAttributeForm.controls.mrp.hasError('required')  && btnSubmited ">  
-                      <div class="alert alert-danger">
-                        MRP is Required.
-                      </div>
+                <div class="form-row">
+                    <div class="form-group col-xl-6">
+                        <label for="mrp">MRP</label>
+                        <input type="input" formControlName="mrp"  class="form-control" id="mrp">
+                        <div *ngIf="productAttributeForm.controls.mrp.hasError('required')  && btnSubmited ">  
+                        <div class="alert alert-danger">
+                            MRP is Required.
+                        </div>
+                        </div>
                     </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="rate">Rate</label>
-                    <input type="input" formControlName="rate"  class="form-control" id="rate">
-                    <div *ngIf="productAttributeForm.controls.rate.hasError('required')  && btnSubmited ">  
-                      <div class="alert alert-danger">
-                       Rate is Required.
-                      </div>
+                    <div class="form-group col-xl-6">
+                        <label for="rate">Rate</label>
+                        <input type="input" formControlName="rate"  class="form-control" id="rate">
+                        <div *ngIf="productAttributeForm.controls.rate.hasError('required')  && btnSubmited ">  
+                        <div class="alert alert-danger">
+                        Rate is Required.
+                        </div>
+                        </div>
                     </div>
-                  </div>
-                <div class="form-group">
+                </div>  
+                <div class="form-group ">
                   <label for="company" style="width: 15%;">Status</label>
                   <label class="radio-inline">
                       <input type="radio"  formControlName="status" [value]="true">  Active
@@ -90,8 +93,7 @@
                     </div>
                   </div>
                </div>
-                <br>
-                <button (click)="SaveProduct()" mat-raised-button color="primary">Submit</button>
+                <button (click)="SaveProductAttribute()" mat-raised-button color="primary">Submit</button>
                 &nbsp;
                 <button (click)="ClearForm()" mat-raised-button color="primary" >Clear</button>
               </div>    

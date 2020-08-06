@@ -84,5 +84,29 @@ namespace ollsmart.Services
             }
             
         }
+        public ProductAttribute SaveProductAttribute(ProductAttribute productAttribute)
+        {
+            if (productAttribute != null)
+            {
+                if (productAttribute.ProductAttributeId == 0)
+                {
+                    productAttribute.Timestamp = DateTime.UtcNow;
+                    productAttribute.CreatedTime = DateTime.UtcNow;
+                    _dbContext.ProductAttributes.Add(productAttribute);
+                }
+                else
+                {
+                    productAttribute.Timestamp = DateTime.UtcNow;
+                     _dbContext.ProductAttributes.Update(productAttribute);
+                }
+                _dbContext.SaveChanges();
+                return productAttribute;
+            }
+            else
+            {
+                throw new ArgumentNullException("Product Attribute");
+            }
+            
+        }
     }
 }

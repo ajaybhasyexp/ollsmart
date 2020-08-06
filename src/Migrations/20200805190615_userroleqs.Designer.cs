@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OllsMart;
 
 namespace OllsMart.Migrations
 {
     [DbContext(typeof(OllsMartContext))]
-    partial class OllsMartContextModelSnapshot : ModelSnapshot
+    [Migration("20200805190615_userroleqs")]
+    partial class userroleqs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

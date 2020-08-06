@@ -1,34 +1,33 @@
 import { Component, OnInit,Inject,ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Unit } from '../../models/Unit';
+import { UserRole } from '../../models/UserRole';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { NgbModal,NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import Swal from 'sweetalert2';
+
 @Component({
-  selector: 'app-units',
-  templateUrl: './units.component.html',
-  styleUrls: ['./units.component.css']
+  selector: 'app-user-roles',
+  templateUrl: './user-roles.component.html',
+  styleUrls: ['./user-roles.component.css']
 })
-export class UnitsComponent implements OnInit {
-  
-  displayedColumns: string[] = ['Unit','Description','Status','Actions'];
-  dataSource: MatTableDataSource<Unit>;
-  unit = new Unit();
-  units: Array<Unit> = new Array<Unit>();
-  modalReference: NgbModalRef;
-  
+export class UserRolesComponent implements OnInit {
+
+  displayedColumns: string[] = ['UserRole','Status','Actions'];
+  dataSource: MatTableDataSource<UserRole>;
+  userRole = new UserRole();
+  userRoles: Array<UserRole> = new Array<UserRole>();
+  modalReference: NgbModalRef; 
+
   public btnSubmited = false;
   
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  unitForm = new FormGroup({
-    unitName: new FormControl('', Validators.required), 
-    unitDescription: new FormControl('', Validators.required),
+  userRoleForm = new FormGroup({
+    userRoleName: new FormControl('', Validators.required), 
     status: new FormControl('', Validators.required)
   });
   baseUrl: string;
@@ -38,6 +37,7 @@ export class UnitsComponent implements OnInit {
     private modalService: NgbModal) { 
        this.baseUrl=url;
   }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -47,25 +47,23 @@ export class UnitsComponent implements OnInit {
     }
   }
   ngOnInit() {
-    this.getUnits(); 
+    this.getUserRoles(); 
   }
-  getUnits() {
-    this.http.get<Array<Unit>>(this.baseUrl + 'api/unit').subscribe(result => {
-      this.units = result;
-      this.dataSource = new MatTableDataSource(this.units);
+  getUserRoles() {
+    this.http.get<Array<UserRole>>(this.baseUrl + 'api/User/UserRoles').subscribe(result => {
+      this.userRoles = result;
+      this.dataSource = new MatTableDataSource(this.userRoles);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log(this.units);
     }, error => console.error(error));
   }
   OpenModal(content,id:number){
-    this.unit = new Unit();   
+    this.userRole = new UserRole();   
     if(id>0)
     {
-        this.http.get<Unit>(this.baseUrl + 'api/Unit/UnitById/'+id).subscribe(result => {
-        // result.push(this.unit);
-        this.BindUnit(result);
-        this.unit=result;
+        this.http.get<UserRole>(this.baseUrl + 'api/User/UserRoleById/'+id).subscribe(result => {
+        this.BindUserRole(result);
+        this.userRole=result;
       }, error => console.error(error));
     }
     else{
@@ -73,36 +71,34 @@ export class UnitsComponent implements OnInit {
     }
     this.modalReference=this.modalService.open(content);
   }
-  BindUnit(data:Unit) {
+  BindUserRole(data:UserRole) {
     console.log(data);
-    this.unit=data;
-    this.unitForm.setValue({
-      unitName: data.unitName,
-      unitDescription: data.description,
+    this.userRole=data;
+    this.userRoleForm.setValue({
+      userRoleName: data.userRoleName,
       status:data.isActive
     });
   }
   ClearForm() {
     this.btnSubmited = false;
-    this.unitForm.reset();
+    this.userRoleForm.reset();
   }
-  SaveUnitDetails(){
+  SaveuserRole(){
     this.btnSubmited = true;
-    if (this.unitForm.valid) {   
+    if (this.userRoleForm.valid) {   
       this.btnSubmited = false;    
-      this.unit.unitName=this.unitForm.get('unitName').value; 
-      this.unit.description=this.unitForm.get('unitDescription').value; 
-      this.unit.isActive=this.unitForm.get('status').value; 
+      this.userRole.userRoleName=this.userRoleForm.get('userRoleName').value; 
+      this.userRole.isActive=this.userRoleForm.get('status').value; 
 
-      this.unit.createdBy=1;
-        this.http.post(this.baseUrl + 'api/Unit', this.unit).subscribe(
+      this.userRole.createdBy=1;
+        this.http.post(this.baseUrl + 'api/User/UserRole', this.userRole).subscribe(
           (response) => {
             this.modalReference.close();
-            this.getUnits(); 
+            this.getUserRoles(); 
           },
           (error) => console.log(error)        
         )
-     
+    
     } 
     
   }

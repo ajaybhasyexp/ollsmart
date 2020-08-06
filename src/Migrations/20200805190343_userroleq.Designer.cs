@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OllsMart;
 
 namespace OllsMart.Migrations
 {
     [DbContext(typeof(OllsMartContext))]
-    partial class OllsMartContextModelSnapshot : ModelSnapshot
+    [Migration("20200805190343_userroleq")]
+    partial class userroleq
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,7 +142,10 @@ namespace OllsMart.Migrations
                     b.Property<decimal>("Mrp")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.Property<int>("ProductId")
+                    b.Property<string>("ProductId")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("ProductId1")
                         .HasColumnType("int");
 
                     b.Property<int>("PropertyId")
@@ -160,7 +165,7 @@ namespace OllsMart.Migrations
 
                     b.HasKey("ProductAttributeId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductId1");
 
                     b.ToTable("ProductAttributes");
                 });
@@ -285,9 +290,7 @@ namespace OllsMart.Migrations
                 {
                     b.HasOne("Models.Entities.Product", null)
                         .WithMany("ProductAttribute")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId1");
                 });
 #pragma warning restore 612, 618
         }

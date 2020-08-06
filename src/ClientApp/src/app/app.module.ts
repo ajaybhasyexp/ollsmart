@@ -38,6 +38,7 @@ import { ProductsComponent } from './masters/products/products.component';
 import { UnitsComponent } from './masters/units/units.component';
 import { ProductPropertyComponent } from './masters/product-property/product-property.component';
 import { ProductAttributesComponent } from './masters/product-attributes/product-attributes.component';
+import { UserRolesComponent } from './masters/user-roles/user-roles.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { ProductAttributesComponent } from './masters/product-attributes/product
     ProductsComponent,
     UnitsComponent,
     ProductPropertyComponent,
-    ProductAttributesComponent
+    ProductAttributesComponent,
+    UserRolesComponent
     // DialogContentExampleDialog
   ],
   imports: [
