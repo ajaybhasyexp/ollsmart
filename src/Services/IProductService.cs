@@ -15,5 +15,8 @@ namespace ollsmart.Services
         ProductProperty GetProductPropertyById(int id);
         ProductProperty SaveProductProperty(ProductProperty productProperty);
         ProductAttribute SaveProductAttribute(ProductAttribute productAttribute);
+        ProductAttribute GetProductAttributeById(int id);
+        List<ProductAttributeDetails> GetProductAttributes();
+        List<Product> GetProductList(int skip ,int take ,int parentCategoryId, int subCategoryId, string productName);
     }
 }

@@ -134,6 +134,47 @@ namespace ollsmart.Controllers
                 return StatusCode(500);
             }
         }
-       
+        [HttpGet("ProductAttributes")]
+        public IActionResult GetProductAttributes()
+        {
+            try
+            {
+                var result=_productService.GetProductAttributes();
+               return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while fetching product Attributes");
+                return StatusCode(500);
+            }
+        }
+        [HttpGet("ProductAttributeById/{id}")]
+        public IActionResult GetProductAttributeById(int id)
+        {
+            try
+            {
+                var result=_productService.GetProductAttributeById(id);
+               return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while fetching product attribute by id ");
+                return StatusCode(500);
+            }
+        }
+        [HttpGet("ProductList")]
+        public IActionResult GetProductList(int skip ,int take ,int parentCategoryId, int subCategoryId, string productName)
+        {
+            try
+            {
+                var result=_productService.GetProductList(skip,take,parentCategoryId,subCategoryId,productName);
+               return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while fetching product List");
+                return StatusCode(500);
+            }
+        }
     }
 }

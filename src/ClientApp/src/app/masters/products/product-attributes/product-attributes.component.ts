@@ -9,10 +9,10 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 import Swal from 'sweetalert2';
 
 
-import { ProductProperty } from '../../models/ProductProperty';
-import { Unit } from '../../models/Unit';
-import { Product } from '../../models/Product';
-import { ProductAttribute } from '../../models/ProductAttribute';
+import { ProductProperty } from '../../../models/ProductProperty';
+import { Unit } from '../../../models/Unit';
+import { Product } from '../../../models/Product';
+import { ProductAttribute } from '../../../models/ProductAttribute';
 @Component({
   selector: 'app-product-attributes',
   templateUrl: './product-attributes.component.html',
@@ -38,8 +38,8 @@ export class ProductAttributesComponent implements OnInit {
     rate: new FormControl(null, Validators.required),
     status: new FormControl(null, Validators.required),
   });
-  displayedColumns: string[] = ['Product','Description','Category','Brand','Status','Actions'];
-  // dataSource: MatTableDataSource<Product>;
+  displayedColumns: string[] = ['Product','Property','PropertyValue','MRP','Rate','Status','Actions'];
+  dataSource: MatTableDataSource<ProductAttribute>;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -51,9 +51,26 @@ export class ProductAttributesComponent implements OnInit {
  }
 
   ngOnInit() {
+    this.getProductAttributes();
     this.getProducts();
     this.getProductProperties();
     this.getUnits();
+  }
+  getProductAttributes() {
+    this.http.get<Array<ProductAttribute>>(this.baseUrl + 'api/product/productAttributes').subscribe(result => {
+      this.productAttributes = result;
+      this.dataSource = new MatTableDataSource(this.productAttributes);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }, error => console.error(error));
+  }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
   getProducts() {
     this.http.get<Array<Product>>(this.baseUrl + 'api/product').subscribe(result => {
@@ -70,19 +87,34 @@ export class ProductAttributesComponent implements OnInit {
       this.units = result.filter(t=>t.isActive ===true);
     }, error => console.error(error));
   }
-  OpenModal(content,id:number){   
+  OpenModal(content,id:number){  
+    this.productAttribute = new ProductAttribute();   
     if(id>0)
     {
-      // this.http.get<Product>(this.baseUrl + 'api/product/productsById/'+id).subscribe(result => {
-      //   this.product = result;
-      //   this.BindProduct(result);
-      // }, error => console.error(error));
+      this.http.get<ProductAttribute>(this.baseUrl + 'api/product/productAttributeById/'+id).subscribe(result => {
+        this.productAttribute = result;
+        this.BindProductAttribute(result);
+      }, error => console.error(error));
     }
     else{
        this.ClearForm();
     }
       this.modalReference=this.modalService.open(content);
   }
+  BindProductAttribute(data:ProductAttribute) {
+    console.log(data);
+    this.productAttribute=data;
+    this.productAttributeForm.setValue({
+      productId : data.productId,
+      propertyId:  data.propertyId,
+      propertyValue:  data.propertyValue,
+      unitId:  data.unitId,
+      mrp: data.mrp,
+      rate: data.rate,
+      status:data.isActive
+    });
+  }
+
   ClearForm() {
     this.btnSubmited = false;
     this.productAttributeForm.reset();
@@ -105,7 +137,7 @@ export class ProductAttributesComponent implements OnInit {
       this.http.post(this.baseUrl + 'api/Product/ProductAttribute', this.productAttribute).subscribe(
           (response) => {
             this.modalReference.close();
-            // this.getUnits(); 
+            this.getProductAttributes();
           },
           (error) => console.log(error)        
         )

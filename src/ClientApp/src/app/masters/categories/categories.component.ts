@@ -50,7 +50,6 @@ export class CategoriesComponent implements OnInit {
   }
   ngOnInit() {
     this.getCategories();
-    this.getParentCategories(); 
     
   }
   getCategories() {
@@ -68,7 +67,8 @@ export class CategoriesComponent implements OnInit {
   }
 
   OpenModal(content,id:number){
-    this.category = new Category();   
+    this.category = new Category();  
+    this.getParentCategories();  
     if(id>0)
     {
         this.http.get<Category>(this.baseUrl + 'api/Category/CategoryById/'+id).subscribe(result => {

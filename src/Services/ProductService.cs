@@ -3,6 +3,7 @@ using OllsMart;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace ollsmart.Services
 {
@@ -108,5 +109,29 @@ namespace ollsmart.Services
             }
             
         }
+        public ProductAttribute GetProductAttributeById(int id)
+        {
+            return _dbContext.ProductAttributes.Where(o => o.ProductAttributeId==id).FirstOrDefault();        
+        }
+         public List<ProductAttributeDetails> GetProductAttributes()
+        {
+             return (from pa in _dbContext.ProductAttributes
+                    join p in _dbContext.Products on pa.ProductId equals p.ProductId 
+					join pp in _dbContext.ProductProperties on pa.PropertyId equals pp.ProductPropertyId 
+                    join u in _dbContext.Units on pa.UnitId equals u.UnitId 
+                  select new ProductAttributeDetails() { ProductAttributeId = pa.ProductAttributeId,  ProductName = p.ProductName, PropertyName = pp.PropertyName ,UnitName=u.UnitName,PropertyValue=pa.PropertyValue,
+                  Mrp=pa.Mrp,Rate=pa.Rate,
+                  IsActive = pa.IsActive}).OrderBy(x => x.ProductName).ThenBy(x => x.PropertyValue).ToList();
+            
+        }
+        public List<Product> GetProductList(int skip ,int take ,int parentCategoryId, int subCategoryId, string productName)
+        {
+            
+           return _dbContext.Products.Include(p=>p.ProductAttribute).Where(b=>b.IsActive==true && b.ProductAttribute.Any() && (subCategoryId==0|| b.CategoryId== subCategoryId )&& (string.IsNullOrEmpty(productName)|| b.ProductName.ToLower().Contains(productName.ToLower()))).OrderBy(x => x.ProductName).Skip(skip).Take(take).ToList();
+           
+        }
     }
 }
+
+
+

@@ -37,7 +37,7 @@ import { ParentCategoriesComponent } from './masters/parent-categories/parent-ca
 import { ProductsComponent } from './masters/products/products.component';
 import { UnitsComponent } from './masters/units/units.component';
 import { ProductPropertyComponent } from './masters/product-property/product-property.component';
-import { ProductAttributesComponent } from './masters/product-attributes/product-attributes.component';
+import { ProductAttributesComponent } from './masters/products/product-attributes/product-attributes.component';
 import { UserRolesComponent } from './masters/user-roles/user-roles.component';
 
 

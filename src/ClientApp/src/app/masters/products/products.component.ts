@@ -89,6 +89,7 @@ export class ProductsComponent implements OnInit {
     }, error => console.error(error));
   }
   OpenModal(content,id:number){   
+    this.product = new Product();   
     if(id>0)
     {
       this.http.get<Product>(this.baseUrl + 'api/product/productsById/'+id).subscribe(result => {
