@@ -127,7 +127,7 @@ namespace ollsmart.Services
         public List<Product> GetProductList(int skip ,int take ,int parentCategoryId, int subCategoryId, string productName)
         {
             
-           return _dbContext.Products.Include(p=>p.ProductAttribute).Where(b=>b.IsActive==true && b.ProductAttribute.Any() && (subCategoryId==0|| b.CategoryId== subCategoryId )&& (string.IsNullOrEmpty(productName)|| b.ProductName.ToLower().Contains(productName.ToLower()))).OrderBy(x => x.ProductName).Skip(skip).Take(take).ToList();
+           return _dbContext.Products.Include(p=>p.ProductAttribute).Where(b=>b.IsActive==true && b.ProductAttribute.Any() && (subCategoryId==0 || b.CategoryId== subCategoryId )&& (string.IsNullOrEmpty(productName)|| b.ProductName.ToLower().Contains(productName.ToLower()))).OrderBy(x => x.ProductName).Skip(skip).Take(take).ToList();
            
         }
     }

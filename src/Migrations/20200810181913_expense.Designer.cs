@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OllsMart;
 
 namespace OllsMart.Migrations
 {
     [DbContext(typeof(OllsMartContext))]
-    partial class OllsMartContextModelSnapshot : ModelSnapshot
+    [Migration("20200810181913_expense")]
+    partial class expense
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,9 +101,6 @@ namespace OllsMart.Migrations
                     b.Property<int>("ExpenseHeadId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Remarks")
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime");
 
@@ -112,6 +111,8 @@ namespace OllsMart.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ExpenseId");
+
+                    b.HasIndex("ExpenseHeadId");
 
                     b.ToTable("Expenses");
                 });
@@ -340,6 +341,15 @@ namespace OllsMart.Migrations
                     b.HasKey("UserRoleId");
 
                     b.ToTable("UserRoles");
+                });
+
+            modelBuilder.Entity("Models.Entities.Expense", b =>
+                {
+                    b.HasOne("Models.Entities.ExpenseHead", null)
+                        .WithMany("Expense")
+                        .HasForeignKey("ExpenseHeadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Models.Entities.ProductAttribute", b =>

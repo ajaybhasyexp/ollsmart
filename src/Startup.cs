@@ -31,6 +31,7 @@ namespace OllsMart
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IBrandService, BrandService>();
             services.AddTransient<IUnitService, UnitService>();
+            services.AddTransient<IExpenseService, ExpenseService>();
             services.AddControllersWithViews();
            // Register the Swagger generator, defining 1 or more Swagger documents
             

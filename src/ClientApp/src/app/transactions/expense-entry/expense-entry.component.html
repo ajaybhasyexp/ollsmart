@@ -1,0 +1,146 @@
+
+<div class="page-Outline">
+  <form [formGroup]="dateRangeForm" (ngSubmit)="onSubmit()" class="form">
+    <mat-form-field appearance="fill" style="width: 30%;">
+        <mat-label>Choose From Date</mat-label>    
+        <input matInput [matDatepicker]="fromDate"  formControlName="fromDateControl">
+        <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+        <mat-datepicker #fromDate></mat-datepicker>   
+        <div *ngIf="dateRangeForm.controls.fromDateControl.hasError('required') && btnSubmited ">  
+          <div class="alert alert-danger">
+            From Date is Required.
+          </div>
+        </div>  
+      </mat-form-field>
+      <mat-form-field appearance="fill" style="width: 30%;">
+        <mat-label>Choose To Date</mat-label>    
+        <input matInput [matDatepicker]="toDate" formControlName="toDateControl">
+        <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+        <mat-datepicker #toDate></mat-datepicker>    
+        <div *ngIf="dateRangeForm.controls.toDateControl.hasError('required') && btnSubmited ">  
+          <div class="alert alert-danger">
+            To Date is Required.
+          </div>
+        </div> 
+      </mat-form-field>
+      <button  type="submit"  mat-flat-button color="primary" >Submit</button>
+    </form>  
+  
+  <div class="row">
+    <mat-form-field class="filter-Outline">
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+    </mat-form-field> 
+  </div>
+  <mat-card>Expenses
+    <span >
+      <button  (click)="openModal(expensemodal,0)"  mat-icon-button color="primary" aria-label="Example icon button with a add icon">
+      <mat-icon >add</mat-icon>
+    </button>
+    <button  (click)="exportToExcel()"  mat-icon-button color="primary" aria-label="Example icon button with a add icon"> 
+      <mat-icon>cloud_download</mat-icon>
+    </button> 
+  </span>
+  </mat-card>
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="Date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+        <td mat-cell *matCellDef="let row"> {{this.datePipe.transform(row.transDate,"dd MMM yyyy")}} </td>
+        <td mat-footer-cell *matFooterCellDef> Total </td>
+      </ng-container>
+      <ng-container matColumnDef="ExpenseHead">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Expense Head</th>
+        <td mat-cell *matCellDef="let row"> {{row.expenseHeadName}} </td>
+        <td mat-footer-cell *matFooterCellDef>  </td>
+      </ng-container>
+      <ng-container matColumnDef="Amount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+        <td mat-cell *matCellDef="let row"> {{row.amount}} </td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotalAmount()}} </td>
+      </ng-container> 
+      <ng-container matColumnDef="Remarks">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Remarks</th>
+        <td mat-cell *matCellDef="let row"> {{row.remarks}} </td>
+        <td mat-footer-cell *matFooterCellDef> </td>
+      </ng-container>
+      <ng-container matColumnDef="Actions">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
+        <td mat-cell *matCellDef="let row" > 
+          <button  (click)="openModal(expensemodal,row.expenseId)" mat-icon-button  color="primary" aria-label="Example icon button with a edit icon">
+            <mat-icon>edit</mat-icon>
+          </button> 
+            <button  (click)="deleteDialog(row)"  mat-icon-button color="primary" aria-label="Example icon button with a delete icon">
+              <mat-icon>delete</mat-icon>
+            </button>   
+        </td>
+        <td mat-footer-cell *matFooterCellDef> </td>
+      </ng-container>  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+      </tr>
+    </table> 
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
+</div> 
+<ng-template #expensemodal let-modal>
+  <div class="modal-body">
+    <mat-dialog-content>
+      <h2 mat-dialog-title>Add New Expense</h2>
+      <br>
+       <form [formGroup]="expenseForm" >
+        <div class="example-container">         
+          <div class="form-group">
+            <label for="expenseHeadId">Expense Head</label>
+            <select  formControlName="expenseHeadId"   class="form-control" id="expenseHeadId">
+              <option [ngValue]="null">Choose a Expense Head</option>
+              <option [ngValue]="expenseHead.expenseHeadId" *ngFor="let expenseHead of expenseHeads">{{expenseHead.expenseHeadName}}</option>
+            </select>
+            <div *ngIf="expenseForm.controls.expenseHeadId.hasError('required')  && btnExpSubmited ">  
+              <div class="alert alert-danger">
+                  Expense Head is Required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <mat-form-field appearance="fill" >
+              <mat-label>Choose Date</mat-label>    
+              <input matInput [matDatepicker]="transDate"  formControlName="transDate">
+              <mat-datepicker-toggle matSuffix [for]="transDate"></mat-datepicker-toggle>
+              <mat-datepicker #transDate></mat-datepicker>   
+              <div *ngIf="expenseForm.controls.transDate.hasError('required') && btnExpSubmited ">  
+                <div class="alert alert-danger">
+                  From Date is Required.
+                </div>
+              </div>  
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="input" formControlName="amount"  class="form-control" id="amount">
+            <div *ngIf="expenseForm.controls.amount.hasError('required')  && btnExpSubmited ">  
+              <div class="alert alert-danger">
+                Amount is Required.
+              </div>
+            </div>
+        </div>
+        <div class="form-group">
+          <label for="remarks">Remarks</label>
+          <input type="input" formControlName="remarks"  class="form-control" id="remarks">
+          <div *ngIf="expenseForm.controls.remarks.hasError('required')  && btnExpSubmited ">  
+            <div class="alert alert-danger">
+              Remarks Required.
+            </div>
+          </div>
+        </div>
+          <button (click)="saveExpense()" mat-raised-button color="primary">Submit</button>
+          &nbsp;
+          <button (click)="clearForm()" mat-raised-button color="primary" >Clear</button>
+        </div>    
+      </form>  
+    </mat-dialog-content>     
+  </div>
+</ng-template>

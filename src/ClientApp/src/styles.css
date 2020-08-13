@@ -22,6 +22,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 table {
   width: 100%;
 }
+tr.mat-footer-row {
+  font-weight: bold;
+}
 
 .mat-form-field {
   font-size: 14px;
@@ -39,4 +42,16 @@ td, th {
 .mat-card {
   color: white;
   background: #28a745;
+}
+
+.page-Outline{
+  width: 100%; 
+  border: 1px solid #e1e1e8;
+  background-color: #f7f7f9;  
+  padding: 20px;
+}
+
+.filter-Outline{
+  width: 40%; 
+  padding: 20px;
 }

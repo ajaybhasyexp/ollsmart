@@ -2,33 +2,42 @@
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
   </mat-form-field> 
-  <mat-card>User Roles  <button  (click)="OpenModal(userRolemodal,0)"  mat-icon-button color="primary" aria-label="Example icon button with a add icon">
+  <div class="col-md-12 table-responsive" #epltable>
+    <div style="padding-bottom: 10px;padding-top: 10px;">
+     <div class="row">
+      <div class="col-sm-12">
+       <button (click)="exportToExcel()" class="btn btn-success">Export To Excel</button> 
+      </div>
+     </div>
+    </div>
+  <mat-card>Expense Heads <button  (click)="OpenModal(expenseHeadmodal,0)"  mat-icon-button color="primary" aria-label="Example icon button with a add icon">
     <mat-icon>add</mat-icon>
   </button>  </mat-card>
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort>
-      <ng-container matColumnDef="UserRole">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>User Role</th>
-        <td mat-cell *matCellDef="let row"> {{row.userRoleName}} </td>
+      <ng-container matColumnDef="ExpenseHead">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Expense Head</th>
+        <td mat-cell *matCellDef="let row"> {{row.expenseHeadName}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+        <td mat-cell *matCellDef="let row"> {{row.description}} </td>
       </ng-container> 
-  
       <ng-container matColumnDef="Status">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
         <td  mat-cell *matCellDef="let row"> 
           <span *ngIf="!row.isActive"  class="badge badge-danger">Inactive</span>
           <span *ngIf="row.isActive"  class="badge badge-success">Active</span> 
       </td>
-      </ng-container>
-      
+      </ng-container>     
       <ng-container matColumnDef="Actions">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
         <td mat-cell *matCellDef="let row" > 
-          <button  (click)="OpenModal(userRolemodal,row.userRoleId)" mat-icon-button  color="primary" aria-label="Example icon button with a edit icon">
+          <button  (click)="OpenModal(expenseHeadmodal,row.expenseHeadId)" mat-icon-button  color="primary" aria-label="Example icon button with a edit icon">
             <mat-icon>edit</mat-icon>
           </button>        
         </td>
-      </ng-container> 
-  
+      </ng-container>  
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       <tr class="mat-row" *matNoDataRow>
@@ -38,36 +47,45 @@
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
   </div>
   
-  <ng-template #userRolemodal let-modal>
+  <ng-template #expenseHeadmodal let-modal>
     <div class="modal-body">
       <mat-dialog-content>
-        <h2 mat-dialog-title>Add New User Role</h2>
+        <h2 mat-dialog-title>Add New Expense Head</h2>
         <br>
-         <form [formGroup]="userRoleForm" >
+         <form [formGroup]="expenseHeadForm" >
         <div class="example-container">         
             <div class="form-group">
-              <label for="userRoleName">User Role</label>
-              <input type="input" formControlName="userRoleName"  class="form-control" id="userRoleName">
-              <div *ngIf="userRoleForm.controls.userRoleName.hasError('required')  && btnSubmited ">  
+              <label for="expenseHeadName">Expense Head</label>
+              <input type="input" formControlName="expenseHeadName"  class="form-control" id="expenseHeadName">
+              <div *ngIf="expenseHeadForm.controls.expenseHeadName.hasError('required')  && btnSubmited ">  
                 <div class="alert alert-danger">
-                  User Role is Required.
+                    Expense Head is Required.
                 </div>
               </div>
             </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="input" formControlName="description"  class="form-control" id="description">
+                <div *ngIf="expenseHeadForm.controls.description.hasError('required')  && btnSubmited ">  
+                  <div class="alert alert-danger">
+                    Description is Required.
+                  </div>
+                </div>
+              </div>
             <div class="form-group">
               <label for="company" style="width: 15%;">Status</label>
               <label class="radio-inline">
                   <input type="radio"  formControlName="status" [value]="true">  Active
                   <input type="radio" formControlName="status" [value]="false"> Inactive
                 </label>
-              <div *ngIf="userRoleForm.controls.status.hasError('required') && btnSubmited ">  
+              <div *ngIf="expenseHeadForm.controls.status.hasError('required') && btnSubmited ">  
                 <div class="alert alert-danger">
                   Status is Required.
                 </div>
               </div>
            </div>
             <br>
-            <button (click)="SaveuserRole()" mat-raised-button color="primary">Submit</button>
+            <button (click)="SaveExpenseHead()" mat-raised-button color="primary">Submit</button>
             &nbsp;
             <button (click)="ClearForm()" mat-raised-button color="primary" >Clear</button>
           </div>    

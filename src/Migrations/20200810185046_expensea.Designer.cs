@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OllsMart;
 
 namespace OllsMart.Migrations
 {
     [DbContext(typeof(OllsMartContext))]
-    partial class OllsMartContextModelSnapshot : ModelSnapshot
+    [Migration("20200810185046_expensea")]
+    partial class expensea
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,9 +100,6 @@ namespace OllsMart.Migrations
 
                     b.Property<int>("ExpenseHeadId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Remarks")
-                        .HasColumnType("text");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime");

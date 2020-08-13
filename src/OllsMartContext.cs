@@ -14,6 +14,8 @@ namespace OllsMart
         public DbSet<Unit> Units { get; set; }
         public DbSet<ProductProperty> ProductProperties { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<ExpenseHead> ExpenseHeads {get;set;}
+        public DbSet<Expense> Expenses {get;set;}
 
         private IConfiguration _config;
         public OllsMartContext(DbContextOptions<OllsMartContext> options,
@@ -48,6 +50,13 @@ namespace OllsMart
             
             var userRole = modelBuilder.Entity<UserRole>();
             userRole.HasKey(p => p.UserRoleId);
+
+            var expenseHead = modelBuilder.Entity<ExpenseHead>();
+            expenseHead.HasKey(p => p.ExpenseHeadId);
+            
+            var expense = modelBuilder.Entity<Expense>();
+            expense.HasKey(p => p.ExpenseId);
+            
 
         }
 
