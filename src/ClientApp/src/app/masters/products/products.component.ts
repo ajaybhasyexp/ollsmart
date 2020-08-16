@@ -116,7 +116,8 @@ export class ProductsComponent implements OnInit {
       productDescription: data.description,
       categoryId: data.categoryId,
       brandId: data.brandId,
-      status:data.isActive
+      status:data.isActive,
+      unitId:data.unitId
     });
   }
   SaveProduct() {

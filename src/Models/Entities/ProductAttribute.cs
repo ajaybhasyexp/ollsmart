@@ -14,5 +14,6 @@ namespace Models.Entities
         public int CreatedBy { get; set; }
         public DateTime CreatedTime { get; set; }
         public DateTime Timestamp { get; set; }
+        // public List<ProductAttribute> ProductAttribute { get; set; } = new List<ProductAttribute>();
     }
 }
