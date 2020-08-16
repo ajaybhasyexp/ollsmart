@@ -9,8 +9,8 @@ using OllsMart;
 namespace OllsMart.Migrations
 {
     [DbContext(typeof(OllsMartContext))]
-    [Migration("20200815111434_intial")]
-    partial class intial
+    [Migration("20200816080502_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -202,11 +202,17 @@ namespace OllsMart.Migrations
                     b.Property<string>("OrderNo")
                         .HasColumnType("text");
 
+                    b.Property<int>("SourceId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("TimeStamp")
                         .HasColumnType("datetime");
+
+                    b.Property<double>("TotalDiscount")
+                        .HasColumnType("double");
 
                     b.Property<int>("UserAddressId")
                         .HasColumnType("int");

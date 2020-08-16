@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace OllsMart.Migrations
 {
-    public partial class intial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -98,7 +98,9 @@ namespace OllsMart.Migrations
                     TimeStamp = table.Column<DateTime>(nullable: false),
                     IsExpressDelivery = table.Column<bool>(nullable: false),
                     DeliveryTimeSlotId = table.Column<int>(nullable: false),
-                    UserAddressId = table.Column<int>(nullable: false)
+                    SourceId = table.Column<int>(nullable: false),
+                    UserAddressId = table.Column<int>(nullable: false),
+                    TotalDiscount = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
