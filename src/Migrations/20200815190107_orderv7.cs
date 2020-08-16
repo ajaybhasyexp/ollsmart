@@ -2,16 +2,16 @@
 
 namespace OllsMart.Migrations
 {
-    public partial class productdetails1 : Migration
+    public partial class orderv7 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
+           
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
+           
         }
     }
 }

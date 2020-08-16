@@ -45,7 +45,8 @@ namespace ollsmart.Services
              return (from p in _dbContext.Products
                     join c in _dbContext.Categories on p.CategoryId equals c.CategoryId 
 					join b in _dbContext.Brands on p.BrandId equals b.BrandId 
-                  select new ProductDetails() { ProductId = p.ProductId,  ProductName = p.ProductName, Description = p.Description ,Brand=b.BrandName,
+                    join u in _dbContext.Units on p.UnitId equals u.UnitId 
+                  select new ProductDetails() { ProductId = p.ProductId,  ProductName = p.ProductName, Description = p.Description ,Brand=b.BrandName,Unit=u.UnitName,
                   Category = c.CategoryName,IsActive = p.IsActive,ImageUrl=p.ImageUrl}).OrderBy(x => x.ProductName).ThenBy(x => x.Category).ToList();
             
         }
@@ -118,8 +119,7 @@ namespace ollsmart.Services
              return (from pa in _dbContext.ProductAttributes
                     join p in _dbContext.Products on pa.ProductId equals p.ProductId 
 					join pp in _dbContext.ProductProperties on pa.PropertyId equals pp.ProductPropertyId 
-                    join u in _dbContext.Units on pa.UnitId equals u.UnitId 
-                  select new ProductAttributeDetails() { ProductAttributeId = pa.ProductAttributeId,  ProductName = p.ProductName, PropertyName = pp.PropertyName ,UnitName=u.UnitName,PropertyValue=pa.PropertyValue,
+                  select new ProductAttributeDetails() { ProductAttributeId = pa.ProductAttributeId,  ProductName = p.ProductName, PropertyName = pp.PropertyName ,PropertyValue=pa.PropertyValue,
                   Mrp=pa.Mrp,Rate=pa.Rate,
                   IsActive = pa.IsActive}).OrderBy(x => x.ProductName).ThenBy(x => x.PropertyValue).ToList();
             

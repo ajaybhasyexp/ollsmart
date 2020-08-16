@@ -3,7 +3,7 @@ export class   ProductAttribute {
     productId: number;
     propertyId: number;
     propertyValue: string;
-    unitId: number;
+    unitValue: number;
     mrp: number;
     rate: number;
     isActive: boolean;

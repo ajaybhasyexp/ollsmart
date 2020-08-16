@@ -10,6 +10,7 @@ namespace Models.Entities
         public string Category  { get; set; }
         public int BrandId  { get; set; }
         public string Brand  { get; set; }
+        public string Unit  { get; set; }
 
         public string ImageUrl { get; set; }
         public string Description { get; set; }

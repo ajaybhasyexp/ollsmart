@@ -30,7 +30,7 @@ export class ProductsComponent implements OnInit {
   products:Array<Product> = new Array<Product>();
   product = new Product();
   
-  displayedColumns: string[] = ['Product','Description','Category','Brand','Status','Actions'];
+  displayedColumns: string[] = ['Product','Description','Category','Brand','Unit','Status','Actions'];
   dataSource: MatTableDataSource<Product>;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -39,6 +39,7 @@ export class ProductsComponent implements OnInit {
     productName: new FormControl('', Validators.required), 
     productDescription: new FormControl('', Validators.required),
     brandId: new FormControl(null, Validators.required),
+    unitId: new FormControl(null, Validators.required),
     categoryId: new FormControl(null, Validators.required),
     status: new FormControl(null, Validators.required),
   });
@@ -53,12 +54,18 @@ export class ProductsComponent implements OnInit {
     this.getProducts();
     this.getCategories();
     this.getBrands();
+    this.getUnits();
 
   }
   clearForm() {
     this.btnSubmited = false;
     this.productForm.reset(); 
    
+  }
+  getUnits() {
+    this.http.get<Array<Unit>>(this.baseUrl + 'api/unit').subscribe(result => {
+      this.units = result.filter(t=>t.isActive ===true);
+    }, error => console.error(error));
   }
   getProducts() {
     this.http.get<Array<Product>>(this.baseUrl + 'api/product').subscribe(result => {
@@ -120,6 +127,7 @@ export class ProductsComponent implements OnInit {
       this.product.description=this.productForm.get('productDescription').value; 
       this.product.categoryId= this.productForm.get('categoryId').value;
       this.product.brandId= this.productForm.get('brandId').value;
+      this.product.unitId= this.productForm.get('unitId').value;
       this.product.isActive=this.productForm.get('status').value;
       this.product.createdBy=1;
       console.log(this.product);

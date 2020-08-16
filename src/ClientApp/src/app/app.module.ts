@@ -1,10 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule ,ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import {DatePipe} from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
@@ -30,6 +29,7 @@ import {
   MatTableModule,
   MatPaginatorModule
 } from "@angular/material";
+
 import { CategoriesComponent } from './masters/categories/categories.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ParentCategoriesComponent } from './masters/parent-categories/parent-categories.component';
@@ -41,6 +41,7 @@ import { UserRolesComponent } from './masters/user-roles/user-roles.component';
 import { TransactionsComponent } from './transactions/transactions.component';
 import { ExpenseHeadsComponent } from './masters/expense-heads/expense-heads.component';
 import { ExpenseEntryComponent } from './transactions/expense-entry/expense-entry.component';
+import { SalesOrderComponent } from './transactions/sales-order/sales-order.component';
 
 
 @NgModule({
@@ -61,7 +62,8 @@ import { ExpenseEntryComponent } from './transactions/expense-entry/expense-entr
     UserRolesComponent,
     TransactionsComponent,
     ExpenseHeadsComponent,
-    ExpenseEntryComponent
+    ExpenseEntryComponent,
+    SalesOrderComponent
     // DialogContentExampleDialog
   ],
   imports: [

@@ -9,8 +9,8 @@ using OllsMart;
 namespace OllsMart.Migrations
 {
     [DbContext(typeof(OllsMartContext))]
-    [Migration("20200804172256_userrole")]
-    partial class userrole
+    [Migration("20200815190107_orderv7")]
+    partial class orderv7
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -86,6 +86,141 @@ namespace OllsMart.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Models.Entities.Expense", b =>
+                {
+                    b.Property<int>("ExpenseId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("double");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("ExpenseHeadId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("TransDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ExpenseId");
+
+                    b.ToTable("Expenses");
+                });
+
+            modelBuilder.Entity("Models.Entities.ExpenseHead", b =>
+                {
+                    b.Property<int>("ExpenseHeadId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ExpenseHeadName")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("ExpenseHeadId");
+
+                    b.ToTable("ExpenseHeads");
+                });
+
+            modelBuilder.Entity("Models.Entities.OrderDetail", b =>
+                {
+                    b.Property<int>("OrderDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("double");
+
+                    b.Property<double>("Discount")
+                        .HasColumnType("double");
+
+                    b.Property<int>("OrderHeaderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductAttributeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Rate")
+                        .HasColumnType("double");
+
+                    b.Property<int>("UnitId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderDetailId");
+
+                    b.HasIndex("OrderHeaderId");
+
+                    b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("Models.Entities.OrderHeader", b =>
+                {
+                    b.Property<int>("OrderHeaderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("DeliveryTimeSlotId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ExpectedDeliveryDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<bool>("IsExpressDelivery")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime");
+
+                    // b.Property<string>("OrderNo")
+                    //     .ValueGeneratedOnAddOrUpdate()
+                    //     .HasColumnType("text")
+                    //     .HasComputedColumnSql("'OLM' + [OrderHeaderId]");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("UserAddressId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderHeaderId");
+
+                    b.ToTable("OrderHeaders");
+                });
+
             modelBuilder.Entity("Models.Entities.Product", b =>
                 {
                     b.Property<int>("ProductId")
@@ -119,6 +254,9 @@ namespace OllsMart.Migrations
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime");
 
+                    b.Property<int>("UnitId")
+                        .HasColumnType("int");
+
                     b.HasKey("ProductId");
 
                     b.ToTable("Products");
@@ -139,10 +277,10 @@ namespace OllsMart.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ProductId")
-                        .HasColumnType("text");
+                    b.Property<decimal>("Mrp")
+                        .HasColumnType("decimal(18, 2)");
 
-                    b.Property<int?>("ProductId1")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("PropertyId")
@@ -151,15 +289,18 @@ namespace OllsMart.Migrations
                     b.Property<string>("PropertyValue")
                         .HasColumnType("text");
 
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("decimal(18, 2)");
+
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime");
 
-                    b.Property<int>("UnitId")
-                        .HasColumnType("int");
+                    b.Property<decimal>("UnitValue")
+                        .HasColumnType("decimal(18, 2)");
 
                     b.HasKey("ProductAttributeId");
 
-                    b.HasIndex("ProductId1");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductAttributes");
                 });
@@ -280,11 +421,22 @@ namespace OllsMart.Migrations
                     b.ToTable("UserRoles");
                 });
 
+            modelBuilder.Entity("Models.Entities.OrderDetail", b =>
+                {
+                    b.HasOne("Models.Entities.OrderHeader", null)
+                        .WithMany("OrderDetail")
+                        .HasForeignKey("OrderHeaderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Models.Entities.ProductAttribute", b =>
                 {
                     b.HasOne("Models.Entities.Product", null)
                         .WithMany("ProductAttribute")
-                        .HasForeignKey("ProductId1");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

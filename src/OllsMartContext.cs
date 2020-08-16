@@ -16,6 +16,10 @@ namespace OllsMart
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<ExpenseHead> ExpenseHeads {get;set;}
         public DbSet<Expense> Expenses {get;set;}
+        public DbSet<OrderHeader> OrderHeaders {get;set;}
+        public DbSet<OrderDetail> OrderDetails {get;set;}
+        // public DbSet<InvoiceHeader> InvoiceHeaders {get;set;}
+        // public DbSet<InvoiceDetail> InvoiceDetails {get;set;}
 
         private IConfiguration _config;
         public OllsMartContext(DbContextOptions<OllsMartContext> options,
@@ -56,6 +60,21 @@ namespace OllsMart
             
             var expense = modelBuilder.Entity<Expense>();
             expense.HasKey(p => p.ExpenseId);
+
+            var orderHeader = modelBuilder.Entity<OrderHeader>();
+            orderHeader.HasKey(p => p.OrderHeaderId);
+            // orderHeader.Property(b => b.OrderNo).HasComputedColumnSql("'SO'+CONVERT([nvarchar](50),[OrderHeaderId])");
+
+            var orderDetail = modelBuilder.Entity<OrderDetail>();
+            orderDetail.HasKey(p => p.OrderDetailId);
+            
+            // orderDetail.HasOne(p=>p.OrderHeader).WithMany(p => p.OrderDetail).HasForeignKey(p => p.OrderId);
+           
+            // var invoiceHeader = modelBuilder.Entity<InvoiceHeader>();
+            // invoiceHeader.HasKey(p => p.InvoiceId);
+
+            // var invoiceDetail = modelBuilder.Entity<InvoiceDetail>();
+            // invoiceDetail.HasKey(p => p.InvoiceDetailId);
             
 
         }

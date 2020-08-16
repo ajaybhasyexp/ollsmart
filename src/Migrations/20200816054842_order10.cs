@@ -2,21 +2,22 @@
 
 namespace OllsMart.Migrations
 {
-    public partial class expensermearks : Migration
+    public partial class order10 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Remarks",
-                table: "Expenses",
-                nullable: true);
+            migrationBuilder.AddColumn<double>(
+                name: "TotalDiscount",
+                table: "OrderHeaders",
+                nullable: false,
+                defaultValue: 0.0);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Remarks",
-                table: "Expenses");
+                name: "TotalDiscount",
+                table: "OrderHeaders");
         }
     }
 }

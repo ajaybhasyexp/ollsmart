@@ -7,7 +7,7 @@ namespace Models.Entities
         public int ProductId { get; set; }
         public int PropertyId  { get; set; }
         public string PropertyValue  { get; set; }
-        public int UnitId  { get; set; }
+        public decimal UnitValue  { get; set; }
         public decimal Mrp  { get; set; }
         public decimal Rate  { get; set; }
         public bool IsActive { get; set; }

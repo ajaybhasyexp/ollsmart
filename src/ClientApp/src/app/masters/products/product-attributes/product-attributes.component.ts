@@ -33,13 +33,13 @@ export class ProductAttributesComponent implements OnInit {
     productId: new FormControl(null, Validators.required), 
     propertyId: new FormControl(null, Validators.required),
     propertyValue: new FormControl('', Validators.required),
-    unitId: new FormControl(null, Validators.required),
+    unitValue: new FormControl('', Validators.required),
     mrp: new FormControl(null, Validators.required),
     rate: new FormControl(null, Validators.required),
     status: new FormControl(null, Validators.required),
   });
   displayedColumns: string[] = ['Product','Property','PropertyValue','MRP','Rate','Status','Actions'];
-  dataSource: MatTableDataSource<ProductAttribute>;
+  dataSource: MatTableDataSource<ProductAttribute>; 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -108,7 +108,7 @@ export class ProductAttributesComponent implements OnInit {
       productId : data.productId,
       propertyId:  data.propertyId,
       propertyValue:  data.propertyValue,
-      unitId:  data.unitId,
+      unitValue:  data.unitValue,
       mrp: data.mrp,
       rate: data.rate,
       status:data.isActive
@@ -126,7 +126,7 @@ export class ProductAttributesComponent implements OnInit {
       this.productAttribute.productId=this.productAttributeForm.get('productId').value; 
       this.productAttribute.propertyId=this.productAttributeForm.get('propertyId').value;
       this.productAttribute.propertyValue=this.productAttributeForm.get('propertyValue').value;  
-      this.productAttribute.unitId=this.productAttributeForm.get('unitId').value;  
+      this.productAttribute.unitValue=parseFloat(this.productAttributeForm.get('unitValue').value);  
       this.productAttribute.mrp=parseFloat(this.productAttributeForm.get('mrp').value);  
       this.productAttribute.rate=parseFloat(this.productAttributeForm.get('rate').value);  
       this.productAttribute.isActive=this.productAttributeForm.get('status').value; 
