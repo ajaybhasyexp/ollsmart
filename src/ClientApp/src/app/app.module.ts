@@ -42,6 +42,7 @@ import { TransactionsComponent } from './transactions/transactions.component';
 import { ExpenseHeadsComponent } from './masters/expense-heads/expense-heads.component';
 import { ExpenseEntryComponent } from './transactions/expense-entry/expense-entry.component';
 import { SalesOrderComponent } from './transactions/sales-order/sales-order.component';
+import { InvoicesComponent } from './transactions/invoices/invoices.component';
 
 
 @NgModule({
@@ -63,7 +64,8 @@ import { SalesOrderComponent } from './transactions/sales-order/sales-order.comp
     TransactionsComponent,
     ExpenseHeadsComponent,
     ExpenseEntryComponent,
-    SalesOrderComponent
+    SalesOrderComponent,
+    InvoicesComponent
     // DialogContentExampleDialog
   ],
   imports: [

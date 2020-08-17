@@ -10,8 +10,8 @@ namespace ollsmart.Services
     {
         OrderHeader GetOrderById(int id);
         OrderHeader SaveOrder(OrderHeader orderData);
-        List<OrderDetail> GetOrderDetailsById(int id);
-        List<OrderHeaderDetail> GetOrderDetails(DateTime fromDate,DateTime toDate);
+        List<OrderDetailVM> GetOrderDetailsById(int id);
+        List<OrderHeader> GetOrderDetails(DateTime fromDate,DateTime toDate);
       
     }
 }

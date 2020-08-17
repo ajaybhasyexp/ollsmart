@@ -3,7 +3,7 @@ using OllsMart;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-
+using Microsoft.EntityFrameworkCore;
 namespace ollsmart.Services
 {
     public class OrderService : IOrderService
@@ -16,27 +16,20 @@ namespace ollsmart.Services
         }
         public OrderHeader GetOrderById(int id)
         {
-             return _dbContext.OrderHeaders.Where(o => o.OrderHeaderId==id).FirstOrDefault();    
+             return _dbContext.OrderHeaders.Include(o => o.OrderDetail).Where(o => o.OrderHeaderId==id).FirstOrDefault();    
         }
-        public List<OrderDetail> GetOrderDetailsById(int id)
+        public List<OrderDetailVM> GetOrderDetailsById(int id)
         {
-             return _dbContext.OrderDetails.Where(o => o.OrderHeaderId==id).ToList();    
+            //  return _dbContext.OrderDetails.Where(o => o.OrderHeaderId==id).ToList();  
+           return (from od in _dbContext.OrderDetails.Where(o => (o.OrderHeaderId==id))
+                    join pa in _dbContext.ProductAttributes on od.ProductAttributeId equals pa.ProductAttributeId 
+                    join p in _dbContext.Products on pa.ProductId equals p.ProductId
+                  select new OrderDetailVM() { ProductAttributeId = pa.ProductAttributeId,  ProductName = p.ProductName, PropertyValue = pa.PropertyValue ,Rate=od.Rate,Quantity=od.Quantity, Amount=od.Amount,Discount=od.Discount}).OrderBy(o => o.ProductName).ToList();
+              
         }
-        public List<OrderHeaderDetail> GetOrderDetails(DateTime fromDate,DateTime toDate)
+        public List<OrderHeader> GetOrderDetails(DateTime fromDate,DateTime toDate)
         {
-            return (from oh in _dbContext.OrderHeaders
-            join od in _dbContext.OrderDetails on oh.OrderHeaderId equals od.OrderDetailId
-            where oh.OrderDate>= fromDate.Date && oh.OrderDate <= toDate.Date
-            group od by new  { oh.OrderDate, oh.OrderHeaderId,oh.OrderNo,oh.Status,oh.ExpectedDeliveryDate } into g
-            select new OrderHeaderDetail { 
-                OrderDate = g.Key.OrderDate, 
-                OrderHeaderId = g.Key.OrderHeaderId,
-                OrderNo = g.Key.OrderNo,     
-                Status = g.Key.Status,
-                ExpectedDeliveryDate = g.Key.ExpectedDeliveryDate,
-                TotalAmount = g.Sum(a => a.Amount),
-                // LineItem=g.Count()
-            }).ToList();
+             return _dbContext.OrderHeaders.Include(o => o.OrderDetail).Where(o => o.OrderDate.Date>= fromDate.Date &&  o.OrderDate.Date<= toDate.Date).ToList();    
         }
         public OrderHeader SaveOrder(OrderHeader orderData)
         {

@@ -1,11 +1,13 @@
-export class SalesOrder {
+import { OrderDetail } from "./OrderDetail";
+
+export class OrderHeader {
     orderHeaderId: number;
     orderNo: string;
     userId:number;
-    userName:string;
     orderDate:string;
     totalAmount:number
     lineItemCount: number;
     expectedDeliveryDate: string;
     status: number;
+    orderDetail: OrderDetail[]
   }

@@ -32,7 +32,7 @@ tr.mat-footer-row {
 }
 
 td, th {
-  width: 20%;
+  max-width: 175px;
 }
 
 .th{

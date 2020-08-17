@@ -33,6 +33,7 @@ namespace OllsMart
             services.AddTransient<IUnitService, UnitService>();
             services.AddTransient<IExpenseService, ExpenseService>();
             services.AddTransient<IOrderService,OrderService>();
+            services.AddTransient<IInvoiceService,InvoiceService>();
             services.AddControllersWithViews();
            // Register the Swagger generator, defining 1 or more Swagger documents
             
