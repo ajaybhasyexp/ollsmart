@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
-EXPOSE 5000
+EXPOSE $PORT
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
@@ -23,4 +23,5 @@ RUN dotnet publish "ollsmart.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet dotnetcore31heroku.dll
+# ENTRYPOINT ["dotnet", "OllsMart.dll"]
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet OllsMart.dll

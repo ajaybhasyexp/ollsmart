@@ -8,9 +8,9 @@ import { NgbModal,NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 
-import { Category } from '../../models/category';
-import { Brand } from '../../models/brand';
-import { Unit } from '../../models/unit';
+import { Category } from '../../models/Category';
+import { Brand } from '../../models/Brand';
+import { Unit } from '../../models/Unit';
 import { Product } from '../../models/Product';
 
 
